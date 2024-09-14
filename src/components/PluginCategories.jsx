@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Search, ShoppingCart, Shield, Zap, BarChart2 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import PluginModal from './PluginModal';
 
 const categories = [
   { name: "Content Management", icon: <FileText className="h-8 w-8" />, description: "Enhance your content creation and management capabilities" },
@@ -12,6 +14,8 @@ const categories = [
 ];
 
 function PluginCategories() {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   return (
     <div>
       <h3 className="text-2xl font-semibold mb-6">Popular Plugin Categories</h3>
@@ -26,10 +30,23 @@ function PluginCategories() {
             </CardHeader>
             <CardContent>
               <CardDescription>{category.description}</CardDescription>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => setSelectedCategory(category)}
+              >
+                Learn More
+              </Button>
             </CardContent>
           </Card>
         ))}
       </div>
+      {selectedCategory && (
+        <PluginModal
+          category={selectedCategory}
+          onClose={() => setSelectedCategory(null)}
+        />
+      )}
     </div>
   );
 }
