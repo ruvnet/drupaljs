@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 
-function PluginHero({ onTabChange }) {
+function PluginHero({ setActiveTab }) {
   return (
     <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-20 px-6 rounded-lg mb-12">
       <h2 className="text-4xl font-bold mb-4">Enhance Your CMS with Powerful Plugins</h2>
@@ -10,7 +10,7 @@ function PluginHero({ onTabChange }) {
         <Button 
           variant="secondary" 
           size="lg"
-          onClick={() => onTabChange('browse')}
+          onClick={() => setActiveTab('browse')}
         >
           Browse Plugins
         </Button>
@@ -18,7 +18,7 @@ function PluginHero({ onTabChange }) {
           variant="outline" 
           size="lg" 
           className="bg-white text-indigo-600 hover:bg-gray-100"
-          onClick={() => onTabChange('create')}
+          onClick={() => setActiveTab('create')}
         >
           Create Your Own
         </Button>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PluginCard from '@/components/PluginCard';
+import { FileText, ShoppingCart, BarChart2 } from 'lucide-react';
 
 const pluginCategories = {
   contentManagement: [
@@ -18,15 +19,17 @@ const pluginCategories = {
   ],
 };
 
-function BrowsePlugins({ installedPlugins, onInstall, onUninstall, onViewDetails }) {
+function BrowsePlugins({ plugins, installedPlugins, onInstall, onUninstall, onViewDetails }) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filterPlugins = (plugins) => {
-    return plugins.filter(plugin => 
+  const filterPlugins = (pluginsToFilter) => {
+    return pluginsToFilter.filter(plugin => 
       plugin.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
+
+  const allPlugins = plugins || Object.values(pluginCategories).flat();
 
   return (
     <div>
@@ -46,10 +49,10 @@ function BrowsePlugins({ installedPlugins, onInstall, onUninstall, onViewDetails
             </TabsTrigger>
           ))}
         </TabsList>
-        {Object.entries(pluginCategories).map(([category, plugins]) => (
+        {Object.entries(pluginCategories).map(([category, categoryPlugins]) => (
           <TabsContent key={category} value={category}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filterPlugins(plugins).map((plugin, index) => (
+              {filterPlugins(categoryPlugins).map((plugin, index) => (
                 <PluginCard 
                   key={`${category}-${index}`}
                   plugin={plugin} 
@@ -64,7 +67,7 @@ function BrowsePlugins({ installedPlugins, onInstall, onUninstall, onViewDetails
         ))}
         <TabsContent value="all">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filterPlugins(Object.values(pluginCategories).flat()).map((plugin, index) => (
+            {filterPlugins(allPlugins).map((plugin, index) => (
               <PluginCard 
                 key={index}
                 plugin={plugin} 

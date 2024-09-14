@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search } from 'lucide-react';
 import { toast } from 'sonner';
 import CreatePlugin from '@/components/CreatePlugin';
 import ManagePlugins from '@/components/ManagePlugins';
-import PluginCard from '@/components/PluginCard';
 import PluginHero from '@/components/PluginHero';
 import PluginCategories from '@/components/PluginCategories';
 import PluginModal from '@/components/PluginModal';
 import BrowsePlugins from '@/components/BrowsePlugins';
 
 const defaultInstalledPlugins = [
-  { name: "SEO Optimizer", description: "Improve your site's search engine rankings", icon: <Search className="h-6 w-6" /> },
-  { name: "Security Shield", description: "Enhance your site's security measures", icon: <Shield className="h-6 w-6" /> },
-  { name: "Performance Booster", description: "Optimize your site's loading speed", icon: <Zap className="h-6 w-6" /> },
+  { name: "SEO Optimizer", description: "Improve your site's search engine rankings", icon: "Search" },
+  { name: "Security Shield", description: "Enhance your site's security measures", icon: "Shield" },
+  { name: "Performance Booster", description: "Optimize your site's loading speed", icon: "Zap" },
 ];
 
 function PluginStore() {
@@ -82,24 +79,21 @@ function PluginStore() {
           <TabsTrigger value="manage">Manage Custom Plugins</TabsTrigger>
         </TabsList>
         <TabsContent value="home">
-          <PluginHero onTabChange={setActiveTab} />
+          <PluginHero setActiveTab={setActiveTab} />
           <PluginCategories onViewDetails={setSelectedPlugin} />
         </TabsContent>
         <TabsContent value="installed">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {installedPlugins.map((plugin, index) => (
-              <PluginCard 
-                key={index} 
-                plugin={plugin} 
-                isInstalled={true} 
-                onUninstall={handleUninstall}
-                onViewDetails={() => setSelectedPlugin(plugin)}
-              />
-            ))}
-          </div>
+          <BrowsePlugins
+            plugins={installedPlugins}
+            installedPlugins={installedPlugins}
+            onInstall={handleInstall}
+            onUninstall={handleUninstall}
+            onViewDetails={setSelectedPlugin}
+          />
         </TabsContent>
         <TabsContent value="browse">
           <BrowsePlugins
+            plugins={defaultInstalledPlugins.concat(customPlugins)}
             installedPlugins={installedPlugins}
             onInstall={handleInstall}
             onUninstall={handleUninstall}
