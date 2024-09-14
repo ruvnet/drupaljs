@@ -6,8 +6,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { HexColorPicker } from "react-colorful";
 
-const ThemeCustomizer = ({ theme, onSave }) => {
+const ThemeCustomizer = ({ theme, onSave, onClose }) => {
   const [customizations, setCustomizations] = useState({
     colors: {
       primary: '#3b82f6',
@@ -42,6 +43,8 @@ const ThemeCustomizer = ({ theme, onSave }) => {
     },
   });
 
+  const [activeColorPicker, setActiveColorPicker] = useState(null);
+
   useEffect(() => {
     const storedCustomizations = localStorage.getItem(`theme_${theme.id}_customizations`);
     if (storedCustomizations) {
@@ -62,7 +65,32 @@ const ThemeCustomizer = ({ theme, onSave }) => {
   const handleSave = () => {
     localStorage.setItem(`theme_${theme.id}_customizations`, JSON.stringify(customizations));
     onSave(customizations);
+    onClose();
   };
+
+  const ColorPicker = ({ color, onChange, label }) => (
+    <div className="mb-4">
+      <Label>{label}</Label>
+      <div className="flex items-center mt-2">
+        <div
+          className="w-10 h-10 rounded-md mr-4 cursor-pointer"
+          style={{ backgroundColor: color }}
+          onClick={() => setActiveColorPicker(activeColorPicker === label ? null : label)}
+        />
+        <Input
+          type="text"
+          value={color}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-28"
+        />
+      </div>
+      {activeColorPicker === label && (
+        <div className="absolute z-10 mt-2">
+          <HexColorPicker color={color} onChange={onChange} />
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -70,17 +98,14 @@ const ThemeCustomizer = ({ theme, onSave }) => {
         <AccordionItem value="colors">
           <AccordionTrigger>Colors</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               {Object.entries(customizations.colors).map(([key, value]) => (
-                <div key={key}>
-                  <Label htmlFor={`color-${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</Label>
-                  <Input
-                    id={`color-${key}`}
-                    type="color"
-                    value={value}
-                    onChange={(e) => handleChange('colors', key, e.target.value)}
-                  />
-                </div>
+                <ColorPicker
+                  key={key}
+                  color={value}
+                  onChange={(newColor) => handleChange('colors', key, newColor)}
+                  label={key.charAt(0).toUpperCase() + key.slice(1)}
+                />
               ))}
             </div>
           </AccordionContent>

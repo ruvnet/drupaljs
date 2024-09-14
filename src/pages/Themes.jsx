@@ -10,6 +10,7 @@ function Themes() {
   const [themes, setThemes] = useState([]);
   const [activeTheme, setActiveTheme] = useState('');
   const [selectedTheme, setSelectedTheme] = useState(null);
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   useEffect(() => {
     const storedThemes = JSON.parse(localStorage.getItem('themes')) || [
@@ -31,12 +32,14 @@ function Themes() {
 
   const handleCustomizeTheme = (theme) => {
     setSelectedTheme(theme);
+    setIsCustomizerOpen(true);
   };
 
   const handleSaveCustomizations = (customizations) => {
     // In a real application, you would apply these customizations to the theme
     console.log('Saved customizations:', customizations);
     toast.success(`Customizations for ${selectedTheme.name} have been saved`);
+    setIsCustomizerOpen(false);
   };
 
   return (
@@ -62,26 +65,30 @@ function Themes() {
               >
                 {activeTheme === theme.name ? 'Active' : 'Activate'}
               </Button>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full" onClick={() => handleCustomizeTheme(theme)}>
-                    Customize
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl">
-                  <DialogHeader>
-                    <DialogTitle>Customize {theme.name}</DialogTitle>
-                    <DialogDescription>
-                      Adjust the settings below to customize your theme.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <ThemeCustomizer theme={theme} onSave={handleSaveCustomizations} />
-                </DialogContent>
-              </Dialog>
+              <Button variant="outline" className="w-full" onClick={() => handleCustomizeTheme(theme)}>
+                Customize
+              </Button>
             </CardContent>
           </Card>
         ))}
       </div>
+      <Dialog open={isCustomizerOpen} onOpenChange={setIsCustomizerOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Customize {selectedTheme?.name}</DialogTitle>
+            <DialogDescription>
+              Adjust the settings below to customize your theme.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedTheme && (
+            <ThemeCustomizer
+              theme={selectedTheme}
+              onSave={handleSaveCustomizations}
+              onClose={() => setIsCustomizerOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
