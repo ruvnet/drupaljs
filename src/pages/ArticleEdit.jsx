@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { Star, Bold, Italic, Underline, List, AlignLeft, Quote, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Star, Bold, Italic, Underline, List, AlignLeft, Quote, X, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const ArticleEdit = () => {
+  const navigate = useNavigate();
   const [isPublished, setIsPublished] = useState(true);
   const [title, setTitle] = useState('The Swiss Alps');
   const [body, setBody] = useState('The Alpine region of Switzerland, conventionally referred to as the Swiss Alps...');
 
+  const handleBack = () => {
+    navigate('/content');
+  };
+
   return (
     <div className="p-6">
+      <Button variant="outline" onClick={handleBack} className="mb-4">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to Content
+      </Button>
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
@@ -55,19 +67,7 @@ const ArticleEdit = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
-                  <div className="border rounded-md p-2 mb-2">
-                    <div className="flex space-x-2 mb-2">
-                      <Button variant="outline" size="icon"><Bold className="h-4 w-4" /></Button>
-                      <Button variant="outline" size="icon"><Italic className="h-4 w-4" /></Button>
-                      <Button variant="outline" size="icon"><Underline className="h-4 w-4" /></Button>
-                      <Button variant="outline" size="icon"><List className="h-4 w-4" /></Button>
-                      <Button variant="outline" size="icon"><AlignLeft className="h-4 w-4" /></Button>
-                      <Button variant="outline" size="icon"><Quote className="h-4 w-4" /></Button>
-                      <Button variant="outline">Format</Button>
-                      <Button variant="outline">Source</Button>
-                    </div>
-                    <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={10} />
-                  </div>
+                  <ReactQuill theme="snow" value={body} onChange={setBody} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Hero</label>
@@ -82,6 +82,90 @@ const ArticleEdit = () => {
                     <p className="text-sm text-gray-500">The maximum number of media items have been selected.</p>
                   </div>
                 </div>
+              </TabsContent>
+
+              <TabsContent value="content">
+                <Card>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-semibold mb-2">SEO Settings</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+                        <Input placeholder="Enter meta title" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+                        <Input placeholder="Enter meta description" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
+                        <Input placeholder="Enter keywords, separated by commas" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="layout">
+                <Card>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-semibold mb-2">Layout Options</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Template</label>
+                        <select className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                          <option>Default</option>
+                          <option>Full Width</option>
+                          <option>Sidebar Left</option>
+                          <option>Sidebar Right</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Header Image</label>
+                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                          <div className="space-y-1 text-center">
+                            <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <div className="flex text-sm text-gray-600">
+                              <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                <span>Upload a file</span>
+                                <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                              </label>
+                              <p className="pl-1">or drag and drop</p>
+                            </div>
+                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="paragraphs">
+                <Card>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-semibold mb-2">Paragraph Blocks</h3>
+                    <div className="space-y-4">
+                      <div className="border p-4 rounded-md">
+                        <h4 className="font-medium mb-2">Text Block</h4>
+                        <ReactQuill theme="snow" value="<p>This is a sample text block. You can edit this content.</p>" />
+                      </div>
+                      <div className="border p-4 rounded-md">
+                        <h4 className="font-medium mb-2">Image Block</h4>
+                        <div className="flex items-center space-x-4">
+                          <div className="w-24 h-24 bg-gray-200 rounded-md"></div>
+                          <div>
+                            <Input placeholder="Image caption" className="mb-2" />
+                            <Button variant="outline" size="sm">Replace Image</Button>
+                          </div>
+                        </div>
+                      </div>
+                      <Button variant="outline">Add New Block</Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
           </TabsContent>
@@ -101,7 +185,7 @@ const ArticleEdit = () => {
           </div>
           <div>
             <h3 className="text-sm font-medium text-gray-700">Revision log message</h3>
-            <Textarea placeholder="Briefly describe the changes you have made." rows={3} />
+            <Input placeholder="Briefly describe the changes you have made." />
           </div>
           <Button variant="outline" className="text-red-600 border-red-600">Delete</Button>
         </div>
