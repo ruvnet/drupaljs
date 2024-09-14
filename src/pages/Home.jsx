@@ -24,7 +24,7 @@ function Home() {
           </CardHeader>
           <CardContent>
             <Button variant="outline" className="w-full" asChild>
-              <Link to="/articles">Go to Content</Link>
+              <Link to="/content">Go to Content</Link>
             </Button>
           </CardContent>
         </Card>
