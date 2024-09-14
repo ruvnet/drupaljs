@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Articles from './pages/Articles';
 import Admin from './pages/Admin';
+import ArticleEdit from './pages/ArticleEdit';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/articles" element={<Articles />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/articles/edit/:id" element={<ArticleEdit />} />
             </Routes>
           </main>
         </div>
