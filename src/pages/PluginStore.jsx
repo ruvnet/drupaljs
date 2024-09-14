@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Search, ShoppingCart, Shield, Zap, BarChart2, Download, Trash2 } from 'lucide-react';
+import { FileText, Search, ShoppingCart, Shield, Zap, BarChart2, Download, Trash2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import CreatePlugin from '@/components/CreatePlugin';
+import ManagePlugins from '@/components/ManagePlugins';
 
 const pluginCategories = {
   content: [
@@ -58,18 +60,14 @@ const pluginCategories = {
   ]
 };
 
-const installedPlugins = [
-  { name: "Basic SEO Tools", category: "SEO", icon: <Search className="h-5 w-5" /> },
-  { name: "Simple Cache", category: "Performance", icon: <Zap className="h-5 w-5" /> },
-  { name: "Contact Form", category: "Content", icon: <FileText className="h-5 w-5" /> },
-];
-
-function PluginCard({ plugin, isInstalled }) {
+function PluginCard({ plugin, isInstalled, onInstall, onUninstall }) {
   const handleInstall = () => {
+    onInstall(plugin);
     toast.success(`${plugin.name} has been installed successfully!`);
   };
 
   const handleUninstall = () => {
+    onUninstall(plugin);
     toast.success(`${plugin.name} has been uninstalled successfully!`);
   };
 
@@ -101,6 +99,47 @@ function PluginCard({ plugin, isInstalled }) {
 
 function PluginStore() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [installedPlugins, setInstalledPlugins] = useState([]);
+  const [customPlugins, setCustomPlugins] = useState([]);
+
+  useEffect(() => {
+    const storedInstalledPlugins = JSON.parse(localStorage.getItem('installedPlugins')) || [];
+    const storedCustomPlugins = JSON.parse(localStorage.getItem('customPlugins')) || [];
+    setInstalledPlugins(storedInstalledPlugins);
+    setCustomPlugins(storedCustomPlugins);
+  }, []);
+
+  const handleInstall = (plugin) => {
+    const updatedInstalledPlugins = [...installedPlugins, plugin];
+    setInstalledPlugins(updatedInstalledPlugins);
+    localStorage.setItem('installedPlugins', JSON.stringify(updatedInstalledPlugins));
+  };
+
+  const handleUninstall = (plugin) => {
+    const updatedInstalledPlugins = installedPlugins.filter(p => p.name !== plugin.name);
+    setInstalledPlugins(updatedInstalledPlugins);
+    localStorage.setItem('installedPlugins', JSON.stringify(updatedInstalledPlugins));
+  };
+
+  const handleAddCustomPlugin = (newPlugin) => {
+    const updatedCustomPlugins = [...customPlugins, newPlugin];
+    setCustomPlugins(updatedCustomPlugins);
+    localStorage.setItem('customPlugins', JSON.stringify(updatedCustomPlugins));
+  };
+
+  const handleUpdateCustomPlugin = (updatedPlugin) => {
+    const updatedCustomPlugins = customPlugins.map(plugin => 
+      plugin.id === updatedPlugin.id ? updatedPlugin : plugin
+    );
+    setCustomPlugins(updatedCustomPlugins);
+    localStorage.setItem('customPlugins', JSON.stringify(updatedCustomPlugins));
+  };
+
+  const handleDeleteCustomPlugin = (pluginId) => {
+    const updatedCustomPlugins = customPlugins.filter(plugin => plugin.id !== pluginId);
+    setCustomPlugins(updatedCustomPlugins);
+    localStorage.setItem('customPlugins', JSON.stringify(updatedCustomPlugins));
+  };
 
   return (
     <div className="p-6">
@@ -117,35 +156,51 @@ function PluginStore() {
       <Tabs defaultValue="installed">
         <TabsList className="mb-4">
           <TabsTrigger value="installed">Installed</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="seo">SEO</TabsTrigger>
-          <TabsTrigger value="ecommerce">E-commerce</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="browse">Browse</TabsTrigger>
+          <TabsTrigger value="create">Create Plugin</TabsTrigger>
+          <TabsTrigger value="manage">Manage Custom Plugins</TabsTrigger>
         </TabsList>
         <TabsContent value="installed">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {installedPlugins.map((plugin, index) => (
-              <PluginCard key={index} plugin={plugin} isInstalled={true} />
+              <PluginCard key={index} plugin={plugin} isInstalled={true} onUninstall={handleUninstall} />
             ))}
           </div>
         </TabsContent>
-        {Object.entries(pluginCategories).map(([category, plugins]) => (
-          <TabsContent key={category} value={category}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {plugins
-                .filter(plugin => 
-                  plugin.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                  plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((plugin, index) => (
-                  <PluginCard key={index} plugin={plugin} isInstalled={false} />
-                ))
-              }
+        <TabsContent value="browse">
+          {Object.entries(pluginCategories).map(([category, plugins]) => (
+            <div key={category}>
+              <h2 className="text-2xl font-semibold mt-6 mb-4 capitalize">{category}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {plugins
+                  .filter(plugin => 
+                    plugin.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                    plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((plugin, index) => (
+                    <PluginCard 
+                      key={index} 
+                      plugin={plugin} 
+                      isInstalled={installedPlugins.some(p => p.name === plugin.name)}
+                      onInstall={handleInstall}
+                      onUninstall={handleUninstall}
+                    />
+                  ))
+                }
+              </div>
             </div>
-          </TabsContent>
-        ))}
+          ))}
+        </TabsContent>
+        <TabsContent value="create">
+          <CreatePlugin onAddPlugin={handleAddCustomPlugin} />
+        </TabsContent>
+        <TabsContent value="manage">
+          <ManagePlugins 
+            plugins={customPlugins} 
+            onUpdatePlugin={handleUpdateCustomPlugin}
+            onDeletePlugin={handleDeleteCustomPlugin}
+          />
+        </TabsContent>
       </Tabs>
     </div>
   );
