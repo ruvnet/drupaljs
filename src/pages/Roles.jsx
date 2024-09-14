@@ -5,13 +5,22 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 function Roles() {
   const [roles, setRoles] = useState([]);
-  const [newRole, setNewRole] = useState('');
+  const [newRole, setNewRole] = useState({ name: '', description: '' });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingRole, setEditingRole] = useState(null);
 
   useEffect(() => {
-    const storedRoles = JSON.parse(localStorage.getItem('roles')) || [];
+    const storedRoles = JSON.parse(localStorage.getItem('roles')) || [
+      { id: 1, name: 'Administrator', description: 'Full access to all features' },
+      { id: 2, name: 'Editor', description: 'Can create and edit content' },
+      { id: 3, name: 'Author', description: 'Can create content' },
+      { id: 4, name: 'Subscriber', description: 'Can view content' }
+    ];
     setRoles(storedRoles);
   }, []);
 
@@ -20,38 +29,39 @@ function Roles() {
     setRoles(updatedRoles);
   };
 
-  const handleAddRole = async () => {
-    if (newRole.trim()) {
-      try {
-        // Simulating API call
-        // const response = await fetch('/Drupal.js/api/roles', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ name: newRole }),
-        // });
-        // const data = await response.json();
-        const data = { id: Date.now(), name: newRole.trim() };
-        
-        const updatedRoles = [...roles, data];
-        saveRoles(updatedRoles);
-        setNewRole('');
-        toast.success('Role added successfully');
-      } catch (error) {
-        toast.error('Failed to add role');
-      }
+  const handleAddRole = () => {
+    if (newRole.name.trim()) {
+      const updatedRoles = [...roles, { ...newRole, id: Date.now() }];
+      saveRoles(updatedRoles);
+      setNewRole({ name: '', description: '' });
+      setIsDialogOpen(false);
+      toast.success('Role added successfully');
     }
   };
 
-  const handleDeleteRole = async (id) => {
-    try {
-      // Simulating API call
-      // await fetch(`/Drupal.js/api/roles/${id}`, { method: 'DELETE' });
-      const updatedRoles = roles.filter(role => role.id !== id);
+  const handleEditRole = (role) => {
+    setEditingRole(role);
+    setNewRole({ name: role.name, description: role.description });
+    setIsDialogOpen(true);
+  };
+
+  const handleUpdateRole = () => {
+    if (newRole.name.trim()) {
+      const updatedRoles = roles.map(role => 
+        role.id === editingRole.id ? { ...role, ...newRole } : role
+      );
       saveRoles(updatedRoles);
-      toast.success('Role deleted successfully');
-    } catch (error) {
-      toast.error('Failed to delete role');
+      setNewRole({ name: '', description: '' });
+      setIsDialogOpen(false);
+      setEditingRole(null);
+      toast.success('Role updated successfully');
     }
+  };
+
+  const handleDeleteRole = (id) => {
+    const updatedRoles = roles.filter(role => role.id !== id);
+    saveRoles(updatedRoles);
+    toast.success('Role deleted successfully');
   };
 
   return (
@@ -62,20 +72,14 @@ function Roles() {
           <Link to="/people">Back to People</Link>
         </Button>
       </div>
-      <div className="flex space-x-4 mb-6">
-        <Input
-          placeholder="New role name"
-          value={newRole}
-          onChange={(e) => setNewRole(e.target.value)}
-        />
-        <Button onClick={handleAddRole}>
-          <Plus className="mr-2 h-4 w-4" /> Add Role
-        </Button>
-      </div>
+      <Button onClick={() => setIsDialogOpen(true)} className="mb-4">
+        <Plus className="mr-2 h-4 w-4" /> Add Role
+      </Button>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -83,9 +87,10 @@ function Roles() {
           {roles.map((role) => (
             <TableRow key={role.id}>
               <TableCell>{role.name}</TableCell>
+              <TableCell>{role.description}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleEditRole(role)}>
                     <Edit className="h-4 w-4 mr-1" /> Edit
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => handleDeleteRole(role.id)}>
@@ -97,6 +102,43 @@ function Roles() {
           ))}
         </TableBody>
       </Table>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingRole ? 'Edit Role' : 'Add New Role'}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                value={newRole.name}
+                onChange={(e) => setNewRole({ ...newRole, name: e.target.value })}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">
+                Description
+              </Label>
+              <Input
+                id="description"
+                value={newRole.description}
+                onChange={(e) => setNewRole({ ...newRole, description: e.target.value })}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={editingRole ? handleUpdateRole : handleAddRole}>
+              {editingRole ? 'Update' : 'Add'} Role
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

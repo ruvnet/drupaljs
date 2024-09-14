@@ -5,14 +5,33 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState({ username: '', email: '', role: 'user' });
+  const [roles, setRoles] = useState([]);
+  const [newUser, setNewUser] = useState({ username: '', email: '', roleId: '' });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [
+      { id: 1, username: 'admin', email: 'admin@example.com', roleId: 1 },
+      { id: 2, username: 'editor', email: 'editor@example.com', roleId: 2 },
+      { id: 3, username: 'author', email: 'author@example.com', roleId: 3 },
+      { id: 4, username: 'subscriber', email: 'subscriber@example.com', roleId: 4 }
+    ];
     setUsers(storedUsers);
+
+    const storedRoles = JSON.parse(localStorage.getItem('roles')) || [
+      { id: 1, name: 'Administrator' },
+      { id: 2, name: 'Editor' },
+      { id: 3, name: 'Author' },
+      { id: 4, name: 'Subscriber' }
+    ];
+    setRoles(storedRoles);
   }, []);
 
   const saveUsers = (updatedUsers) => {
@@ -20,38 +39,39 @@ function Users() {
     setUsers(updatedUsers);
   };
 
-  const handleAddUser = async () => {
-    if (newUser.username && newUser.email) {
-      try {
-        // Simulating API call
-        // const response = await fetch('/Drupal.js/api/users', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(newUser),
-        // });
-        // const data = await response.json();
-        const data = { ...newUser, id: Date.now() };
-        
-        const updatedUsers = [...users, data];
-        saveUsers(updatedUsers);
-        setNewUser({ username: '', email: '', role: 'user' });
-        toast.success('User added successfully');
-      } catch (error) {
-        toast.error('Failed to add user');
-      }
+  const handleAddUser = () => {
+    if (newUser.username && newUser.email && newUser.roleId) {
+      const updatedUsers = [...users, { ...newUser, id: Date.now() }];
+      saveUsers(updatedUsers);
+      setNewUser({ username: '', email: '', roleId: '' });
+      setIsDialogOpen(false);
+      toast.success('User added successfully');
     }
   };
 
-  const handleDeleteUser = async (id) => {
-    try {
-      // Simulating API call
-      // await fetch(`/Drupal.js/api/users/${id}`, { method: 'DELETE' });
-      const updatedUsers = users.filter(user => user.id !== id);
+  const handleEditUser = (user) => {
+    setEditingUser(user);
+    setNewUser({ username: user.username, email: user.email, roleId: user.roleId });
+    setIsDialogOpen(true);
+  };
+
+  const handleUpdateUser = () => {
+    if (newUser.username && newUser.email && newUser.roleId) {
+      const updatedUsers = users.map(user => 
+        user.id === editingUser.id ? { ...user, ...newUser } : user
+      );
       saveUsers(updatedUsers);
-      toast.success('User deleted successfully');
-    } catch (error) {
-      toast.error('Failed to delete user');
+      setNewUser({ username: '', email: '', roleId: '' });
+      setIsDialogOpen(false);
+      setEditingUser(null);
+      toast.success('User updated successfully');
     }
+  };
+
+  const handleDeleteUser = (id) => {
+    const updatedUsers = users.filter(user => user.id !== id);
+    saveUsers(updatedUsers);
+    toast.success('User deleted successfully');
   };
 
   return (
@@ -62,31 +82,9 @@ function Users() {
           <Link to="/people">Back to People</Link>
         </Button>
       </div>
-      <div className="flex space-x-4 mb-6">
-        <Input
-          placeholder="Username"
-          value={newUser.username}
-          onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-        />
-        <Input
-          placeholder="Email"
-          type="email"
-          value={newUser.email}
-          onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-        />
-        <select
-          className="border rounded px-2 py-1"
-          value={newUser.role}
-          onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-        >
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-          <option value="editor">Editor</option>
-        </select>
-        <Button onClick={handleAddUser}>
-          <Plus className="mr-2 h-4 w-4" /> Add User
-        </Button>
-      </div>
+      <Button onClick={() => setIsDialogOpen(true)} className="mb-4">
+        <Plus className="mr-2 h-4 w-4" /> Add User
+      </Button>
       <Table>
         <TableHeader>
           <TableRow>
@@ -101,10 +99,10 @@ function Users() {
             <TableRow key={user.id}>
               <TableCell>{user.username}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
+              <TableCell>{roles.find(role => role.id === user.roleId)?.name}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleEditUser(user)}>
                     <Edit className="h-4 w-4 mr-1" /> Edit
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id)}>
@@ -116,6 +114,62 @@ function Users() {
           ))}
         </TableBody>
       </Table>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingUser ? 'Edit User' : 'Add New User'}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Username
+              </Label>
+              <Input
+                id="username"
+                value={newUser.username}
+                onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
+                Role
+              </Label>
+              <Select
+                value={newUser.roleId.toString()}
+                onValueChange={(value) => setNewUser({ ...newUser, roleId: Number(value) })}
+              >
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {roles.map(role => (
+                    <SelectItem key={role.id} value={role.id.toString()}>{role.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={editingUser ? handleUpdateUser : handleAddUser}>
+              {editingUser ? 'Update' : 'Add'} User
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
