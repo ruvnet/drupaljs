@@ -6,6 +6,9 @@ import ArticleEdit from './pages/ArticleEdit';
 import Articles from './pages/Articles';
 import Home from './pages/Home';
 import Structure from './pages/Structure';
+import ContentTypes from './pages/ContentTypes';
+import Taxonomy from './pages/Taxonomy';
+import Menus from './pages/Menus';
 import Appearance from './pages/Appearance';
 import People from './pages/People';
 import Utilities from './pages/Utilities';
@@ -49,6 +52,9 @@ function App() {
                   <Route path="/content/new" element={<NewContent />} />
                   <Route path="/content/edit/:id" element={<ArticleEdit />} />
                   <Route path="/structure" element={<Structure />} />
+                  <Route path="/structure/content-types" element={<ContentTypes />} />
+                  <Route path="/structure/taxonomy" element={<Taxonomy />} />
+                  <Route path="/structure/menus" element={<Menus />} />
                   <Route path="/appearance" element={<Appearance />} />
                   <Route path="/people" element={<People />} />
                   <Route path="/utilities" element={<Utilities />} />
