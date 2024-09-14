@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Star, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,9 +11,48 @@ import 'react-quill/dist/quill.snow.css';
 
 const ArticleEdit = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [isPublished, setIsPublished] = useState(true);
-  const [title, setTitle] = useState('The Swiss Alps');
-  const [body, setBody] = useState('The Alpine region of Switzerland, conventionally referred to as the Swiss Alps...');
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [keywords, setKeywords] = useState('');
+  const [template, setTemplate] = useState('default');
+
+  useEffect(() => {
+    // Load data from local storage
+    const storedData = JSON.parse(localStorage.getItem(`article_${id}`)) || {};
+    setIsPublished(storedData.isPublished || true);
+    setTitle(storedData.title || '');
+    setBody(storedData.body || '');
+    setMetaTitle(storedData.metaTitle || '');
+    setMetaDescription(storedData.metaDescription || '');
+    setKeywords(storedData.keywords || '');
+    setTemplate(storedData.template || 'default');
+  }, [id]);
+
+  const handleSave = () => {
+    const articleData = {
+      id,
+      isPublished,
+      title,
+      body,
+      metaTitle,
+      metaDescription,
+      keywords,
+      template,
+      lastSaved: new Date().toISOString(),
+    };
+    localStorage.setItem(`article_${id}`, JSON.stringify(articleData));
+    // In the future, replace with API call:
+    // await fetch('/Drupal.js/api/articles/${id}', {
+    //   method: 'PUT',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(articleData),
+    // });
+    navigate('/content');
+  };
 
   const handleBack = () => {
     navigate('/content');
@@ -38,17 +77,13 @@ const ArticleEdit = () => {
               <Switch checked={isPublished} onCheckedChange={setIsPublished} />
             </div>
             <Button variant="outline">Preview</Button>
-            <Button>Save</Button>
+            <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
 
         <Tabs defaultValue="edit">
           <TabsList>
-            <TabsTrigger value="view">View</TabsTrigger>
             <TabsTrigger value="edit">Edit</TabsTrigger>
-            <TabsTrigger value="delete">Delete</TabsTrigger>
-            <TabsTrigger value="revisions">Revisions</TabsTrigger>
-            <TabsTrigger value="devel">Devel</TabsTrigger>
           </TabsList>
 
           <TabsContent value="edit">
@@ -89,15 +124,27 @@ const ArticleEdit = () => {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
-                        <Input placeholder="Enter meta title" />
+                        <Input 
+                          placeholder="Enter meta title" 
+                          value={metaTitle}
+                          onChange={(e) => setMetaTitle(e.target.value)}
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                        <Input placeholder="Enter meta description" />
+                        <Input 
+                          placeholder="Enter meta description" 
+                          value={metaDescription}
+                          onChange={(e) => setMetaDescription(e.target.value)}
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
-                        <Input placeholder="Enter keywords, separated by commas" />
+                        <Input 
+                          placeholder="Enter keywords, separated by commas" 
+                          value={keywords}
+                          onChange={(e) => setKeywords(e.target.value)}
+                        />
                       </div>
                     </div>
                   </CardContent>
@@ -111,11 +158,15 @@ const ArticleEdit = () => {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Template</label>
-                        <select className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                          <option>Default</option>
-                          <option>Full Width</option>
-                          <option>Sidebar Left</option>
-                          <option>Sidebar Right</option>
+                        <select 
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          value={template}
+                          onChange={(e) => setTemplate(e.target.value)}
+                        >
+                          <option value="default">Default</option>
+                          <option value="full-width">Full Width</option>
+                          <option value="sidebar-left">Sidebar Left</option>
+                          <option value="sidebar-right">Sidebar Right</option>
                         </select>
                       </div>
                       <div>
@@ -169,25 +220,6 @@ const ArticleEdit = () => {
             </Tabs>
           </TabsContent>
         </Tabs>
-      </div>
-      <div className="mt-6 bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">Additional Information</h2>
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-medium text-gray-700">Published</h3>
-            <p className="text-sm text-gray-600">Last saved: 11/03/2020 - 20:43</p>
-            <p className="text-sm text-gray-600">Author: admin</p>
-          </div>
-          <div>
-            <h3 className="text-sm font-medium text-gray-700">Create new revision</h3>
-            <Switch />
-          </div>
-          <div>
-            <h3 className="text-sm font-medium text-gray-700">Revision log message</h3>
-            <Input placeholder="Briefly describe the changes you have made." />
-          </div>
-          <Button variant="outline" className="text-red-600 border-red-600">Delete</Button>
-        </div>
       </div>
     </div>
   );

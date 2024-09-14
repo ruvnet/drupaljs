@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -10,20 +10,65 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 function NewContent() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [isPublished, setIsPublished] = useState(false);
   const navigate = useNavigate();
+  const [isPublished, setIsPublished] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [keywords, setKeywords] = useState('');
+  const [template, setTemplate] = useState('default');
 
-  const handleBack = () => {
+  useEffect(() => {
+    // Load draft from local storage
+    const storedDraft = JSON.parse(localStorage.getItem('newContentDraft')) || {};
+    setIsPublished(storedDraft.isPublished || false);
+    setTitle(storedDraft.title || '');
+    setBody(storedDraft.body || '');
+    setMetaTitle(storedDraft.metaTitle || '');
+    setMetaDescription(storedDraft.metaDescription || '');
+    setKeywords(storedDraft.keywords || '');
+    setTemplate(storedDraft.template || 'default');
+  }, []);
+
+  const saveDraft = () => {
+    const draftData = {
+      isPublished,
+      title,
+      body,
+      metaTitle,
+      metaDescription,
+      keywords,
+      template,
+      lastSaved: new Date().toISOString(),
+    };
+    localStorage.setItem('newContentDraft', JSON.stringify(draftData));
+  };
+
+  const handleSave = () => {
+    const newContentData = {
+      isPublished,
+      title,
+      body,
+      metaTitle,
+      metaDescription,
+      keywords,
+      template,
+      createdAt: new Date().toISOString(),
+    };
+    // In the future, replace with API call:
+    // await fetch('/Drupal.js/api/articles', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(newContentData),
+    // });
+    localStorage.setItem(`article_${Date.now()}`, JSON.stringify(newContentData));
+    localStorage.removeItem('newContentDraft');
     navigate('/content');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically send the new content to your backend
-    console.log({ title, content, isPublished });
-    // After saving, navigate back to the articles list
+  const handleBack = () => {
+    saveDraft();
     navigate('/content');
   };
 
@@ -46,7 +91,7 @@ function NewContent() {
               <Switch checked={isPublished} onCheckedChange={setIsPublished} />
             </div>
             <Button variant="outline">Preview</Button>
-            <Button onClick={handleSubmit}>Save</Button>
+            <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
 
@@ -71,7 +116,7 @@ function NewContent() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
-                  <ReactQuill theme="snow" value={content} onChange={setContent} style={{height: '300px'}} />
+                  <ReactQuill theme="snow" value={body} onChange={setBody} style={{height: '300px'}} />
                   <div style={{height: '250px'}}></div>
                 </div>
                 <div>
@@ -92,15 +137,27 @@ function NewContent() {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
-                        <Input placeholder="Enter meta title" />
+                        <Input 
+                          placeholder="Enter meta title" 
+                          value={metaTitle}
+                          onChange={(e) => setMetaTitle(e.target.value)}
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                        <Input placeholder="Enter meta description" />
+                        <Input 
+                          placeholder="Enter meta description" 
+                          value={metaDescription}
+                          onChange={(e) => setMetaDescription(e.target.value)}
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
-                        <Input placeholder="Enter keywords, separated by commas" />
+                        <Input 
+                          placeholder="Enter keywords, separated by commas" 
+                          value={keywords}
+                          onChange={(e) => setKeywords(e.target.value)}
+                        />
                       </div>
                     </div>
                   </CardContent>
@@ -114,11 +171,15 @@ function NewContent() {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Template</label>
-                        <select className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                          <option>Default</option>
-                          <option>Full Width</option>
-                          <option>Sidebar Left</option>
-                          <option>Sidebar Right</option>
+                        <select 
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          value={template}
+                          onChange={(e) => setTemplate(e.target.value)}
+                        >
+                          <option value="default">Default</option>
+                          <option value="full-width">Full Width</option>
+                          <option value="sidebar-left">Sidebar Left</option>
+                          <option value="sidebar-right">Sidebar Right</option>
                         </select>
                       </div>
                       <div>
