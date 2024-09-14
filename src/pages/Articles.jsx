@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,21 +9,35 @@ const mockArticles = [
   { id: 1, title: 'Introduction to Drupal', type: 'Blog Post', author: 'John Doe', status: 'published', updated: '2023-03-15' },
   { id: 2, title: 'Creating Custom Modules', type: 'Tutorial', author: 'Jane Smith', status: 'draft', updated: '2023-03-20' },
   { id: 3, title: 'Drupal Security Best Practices', type: 'Article', author: 'Bob Johnson', status: 'published', updated: '2023-03-25' },
+  // Add more mock articles here to test pagination
 ];
 
 function Articles() {
-  const [articles, setArticles] = useState(mockArticles);
+  const [articles] = useState(mockArticles);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 5;
+  const navigate = useNavigate();
 
   const filteredArticles = articles.filter(article => 
     (filter === 'all' || article.status === filter) &&
     article.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredArticles.length / articlesPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this article?')) {
-      setArticles(articles.filter(article => article.id !== id));
+      // In a real application, you would delete the article from the backend here
+      console.log(`Deleting article with id: ${id}`);
     }
   };
 
@@ -31,9 +45,7 @@ function Articles() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Content</h1>
-        <Link to="/articles/new">
-          <Button>Add content</Button>
-        </Link>
+        <Button onClick={() => navigate('/new-content')}>Add content</Button>
       </div>
       <div className="mb-4 flex space-x-4">
         <Input 
@@ -65,7 +77,7 @@ function Articles() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredArticles.map(article => (
+          {currentArticles.map(article => (
             <TableRow key={article.id}>
               <TableCell>{article.title}</TableCell>
               <TableCell>{article.type}</TableCell>
@@ -80,6 +92,18 @@ function Articles() {
           ))}
         </TableBody>
       </Table>
+      <div className="mt-4 flex justify-center">
+        {pageNumbers.map(number => (
+          <Button
+            key={number}
+            onClick={() => setCurrentPage(number)}
+            variant={currentPage === number ? "default" : "outline"}
+            className="mx-1"
+          >
+            {number}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 }
