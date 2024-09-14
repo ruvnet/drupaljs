@@ -1,5 +1,71 @@
 Welcome to **Drupal.js**, a Drupal CMS clone using Node.js, Vite.js, Tailwind CSS, and Supabase as the database. The script includes all the required code, configurations, a sample plugin, environment variables, Dockerfile, API, folder structures, and files, with no placeholders.
 
+# Drupal.js Structure 
+
+Overview of the folder and file structure that your script will create for the Drupal.js project. It's structured to set up both the backend (Strapi with Supabase) and the frontend (Vite.js with React and Tailwind CSS), along with Docker for containerization and basic documentation.
+
+### **Folder Structure Overview**
+```bash
+Drupal.js/
+├── backend/                    # Backend project directory
+│   ├── config/                 # Configuration files
+│   │   ├── database.js         # Supabase PostgreSQL config for Strapi
+│   │   └── plugins.js          # Plugins configuration for Strapi
+│   ├── src/                    # Source files for backend API
+│   │   ├── api/                # API content types
+│   │   │   ├── article/        # Content type: Article
+│   │   │   ├── category/       # Content type: Category
+│   │   │   ├── page/           # Content type: Page
+│   │   │   └── menu/           # Content type: Menu
+│   │   └── components/         # Reusable components (e.g., Menu Item)
+│   ├── plugins/                # Custom plugins for Strapi
+│   │   └── hello-world/        # Sample custom plugin
+│   ├── .env                    # Environment variables for Supabase
+│   ├── Dockerfile              # Dockerfile for backend service
+│   ├── package.json            # Backend dependencies
+│   └── README.md               # Backend-specific README
+├── frontend/                   # Frontend project directory
+│   ├── src/                    # Source files for frontend
+│   │   ├── components/         # React components
+│   │   ├── pages/              # React page views
+│   │   ├── services/           # Services (e.g., API calls)
+│   │   ├── contexts/           # Context providers (e.g., authentication)
+│   │   └── utils/              # Utility files (e.g., Supabase client)
+│   ├── public/                 # Public assets (HTML, images, etc.)
+│   ├── Dockerfile              # Dockerfile for frontend service
+│   ├── package.json            # Frontend dependencies
+│   └── README.md               # Frontend-specific README
+├── docs/                       # Documentation
+│   ├── README.md               # General project README with instructions
+├── docker-compose.yml          # Docker Compose configuration
+├── .env                        # Environment variables for both backend and frontend
+└── .gitignore                  # Git ignore rules
+```
+
+### **Explanation of Key Files and Folders**
+
+- **backend/**
+  - **config/database.js**: Configures the connection to the Supabase PostgreSQL database.
+  - **src/api/**: Contains the content types (models) for articles, pages, categories, and menus.
+  - **src/components/**: Includes reusable components, like a `menu-item` for navigation menus.
+  - **plugins/**: Custom Strapi plugins, such as the `hello-world` plugin.
+  - **.env**: Stores environment variables for database and API credentials.
+  - **Dockerfile**: Defines how to containerize the backend application.
+
+- **frontend/**
+  - **src/components/**: React components for the frontend UI.
+  - **src/utils/supabaseClient.js**: Configures the Supabase client for API interaction.
+  - **Dockerfile**: Defines how to containerize the frontend application.
+
+- **docs/**
+  - **README.md**: Contains installation instructions, API documentation, scaling info, and more.
+
+- **docker-compose.yml**: Defines how Docker will build and run both the backend and frontend, as well as the Supabase PostgreSQL database.
+
+- **.gitignore**: Specifies files and directories that Git should ignore (e.g., `node_modules`, `.env`).
+
+This setup provides a structured approach to building a full-stack CMS project using modern web development tools and best practices for containerization, version control, and configuration management.
+
 Following the script, you'll find separate detailed instructions, documentation, API documentation, Supabase setup, scaling information, functional and technical specifications, and UI elements.
 
 ---
