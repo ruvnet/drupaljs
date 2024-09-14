@@ -14,6 +14,9 @@ import Themes from './pages/Themes';
 import Blocks from './pages/Blocks';
 import CustomCSS from './pages/CustomCSS';
 import People from './pages/People';
+import Users from './pages/Users';
+import Roles from './pages/Roles';
+import Permissions from './pages/Permissions';
 import Utilities from './pages/Utilities';
 import Settings from './pages/Settings';
 import PluginStore from './pages/PluginStore';
@@ -63,6 +66,9 @@ function App() {
                   <Route path="/appearance/blocks" element={<Blocks />} />
                   <Route path="/appearance/custom-css" element={<CustomCSS />} />
                   <Route path="/people" element={<People />} />
+                  <Route path="/people/users" element={<Users />} />
+                  <Route path="/people/roles" element={<Roles />} />
+                  <Route path="/people/permissions" element={<Permissions />} />
                   <Route path="/utilities" element={<Utilities />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/plugin-store" element={<PluginStore />} />
