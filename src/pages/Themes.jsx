@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from 'sonner';
+import ThemeCustomizer from '../components/ThemeCustomizer';
 
 function Themes() {
   const [themes, setThemes] = useState([]);
   const [activeTheme, setActiveTheme] = useState('');
+  const [selectedTheme, setSelectedTheme] = useState(null);
 
   useEffect(() => {
     const storedThemes = JSON.parse(localStorage.getItem('themes')) || [
@@ -26,6 +29,16 @@ function Themes() {
     toast.success(`${themeName} has been activated`);
   };
 
+  const handleCustomizeTheme = (theme) => {
+    setSelectedTheme(theme);
+  };
+
+  const handleSaveCustomizations = (customizations) => {
+    // In a real application, you would apply these customizations to the theme
+    console.log('Saved customizations:', customizations);
+    toast.success(`Customizations for ${selectedTheme.name} have been saved`);
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -41,7 +54,7 @@ function Themes() {
               <CardTitle>{theme.name}</CardTitle>
               <CardDescription>{theme.description}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-2">
               <Button 
                 variant={activeTheme === theme.name ? "default" : "outline"} 
                 className="w-full"
@@ -49,6 +62,22 @@ function Themes() {
               >
                 {activeTheme === theme.name ? 'Active' : 'Activate'}
               </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full" onClick={() => handleCustomizeTheme(theme)}>
+                    Customize
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>Customize {theme.name}</DialogTitle>
+                    <DialogDescription>
+                      Adjust the settings below to customize your theme.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <ThemeCustomizer theme={theme} onSave={handleSaveCustomizations} />
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
         ))}
