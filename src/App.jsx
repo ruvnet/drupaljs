@@ -18,6 +18,9 @@ import Users from './pages/Users';
 import Roles from './pages/Roles';
 import Permissions from './pages/Permissions';
 import Utilities from './pages/Utilities';
+import Cache from './pages/Cache';
+import Backup from './pages/Backup';
+import Database from './pages/Database';
 import Settings from './pages/Settings';
 import PluginStore from './pages/PluginStore';
 import Reports from './pages/Reports';
@@ -70,6 +73,9 @@ function App() {
                   <Route path="/people/roles" element={<Roles />} />
                   <Route path="/people/permissions" element={<Permissions />} />
                   <Route path="/utilities" element={<Utilities />} />
+                  <Route path="/utilities/cache" element={<Cache />} />
+                  <Route path="/utilities/backup" element={<Backup />} />
+                  <Route path="/utilities/database" element={<Database />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/plugin-store" element={<PluginStore />} />
                   <Route path="/reports" element={<Reports />} />
