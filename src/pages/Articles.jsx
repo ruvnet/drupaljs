@@ -36,26 +36,25 @@ function Articles() {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this article?')) {
-      // In a real application, you would delete the article from the backend here
       console.log(`Deleting article with id: ${id}`);
     }
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Content</h1>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold mb-4 sm:mb-0">Content</h1>
         <Button onClick={() => navigate('/new-content')}>Add content</Button>
       </div>
-      <div className="mb-4 flex space-x-4">
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <Input 
           placeholder="Search content..." 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-sm"
+          className="w-full sm:w-64"
         />
         <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-40">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -65,40 +64,46 @@ function Articles() {
           </SelectContent>
         </Select>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Content type</TableHead>
-            <TableHead>Author</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Updated</TableHead>
-            <TableHead>Operations</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {currentArticles.map(article => (
-            <TableRow key={article.id}>
-              <TableCell>{article.title}</TableCell>
-              <TableCell>{article.type}</TableCell>
-              <TableCell>{article.author}</TableCell>
-              <TableCell>{article.status}</TableCell>
-              <TableCell>{article.updated}</TableCell>
-              <TableCell>
-                <Link to={`/articles/edit/${article.id}`} className="text-blue-600 hover:underline mr-2">Edit</Link>
-                <button onClick={() => handleDelete(article.id)} className="text-red-600 hover:underline">Delete</button>
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead className="hidden sm:table-cell">Content type</TableHead>
+              <TableHead className="hidden sm:table-cell">Author</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="hidden sm:table-cell">Updated</TableHead>
+              <TableHead>Operations</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="mt-4 flex justify-center">
+          </TableHeader>
+          <TableBody>
+            {currentArticles.map(article => (
+              <TableRow key={article.id}>
+                <TableCell>{article.title}</TableCell>
+                <TableCell className="hidden sm:table-cell">{article.type}</TableCell>
+                <TableCell className="hidden sm:table-cell">{article.author}</TableCell>
+                <TableCell>{article.status}</TableCell>
+                <TableCell className="hidden sm:table-cell">{article.updated}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to={`/articles/edit/${article.id}`}>Edit</Link>
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => handleDelete(article.id)}>Delete</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex justify-center mt-4 space-x-2">
         {pageNumbers.map(number => (
           <Button
             key={number}
             onClick={() => setCurrentPage(number)}
             variant={currentPage === number ? "default" : "outline"}
-            className="mx-1"
+            size="sm"
           >
             {number}
           </Button>
