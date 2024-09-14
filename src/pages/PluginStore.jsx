@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { FileText, Search, ShoppingCart, Shield, Zap, BarChart2, Download, Trash2, Plus } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { toast } from 'sonner';
 import CreatePlugin from '@/components/CreatePlugin';
 import ManagePlugins from '@/components/ManagePlugins';
@@ -13,6 +10,7 @@ import PluginCard from '@/components/PluginCard';
 import PluginHero from '@/components/PluginHero';
 import PluginCategories from '@/components/PluginCategories';
 import PluginModal from '@/components/PluginModal';
+import BrowsePlugins from '@/components/BrowsePlugins';
 
 const defaultInstalledPlugins = [
   { name: "SEO Optimizer", description: "Improve your site's search engine rankings", icon: <Search className="h-6 w-6" /> },
@@ -20,25 +18,9 @@ const defaultInstalledPlugins = [
   { name: "Performance Booster", description: "Optimize your site's loading speed", icon: <Zap className="h-6 w-6" /> },
 ];
 
-const pluginCategories = {
-  contentManagement: [
-    { name: "Advanced Editor", description: "Enhanced content editing capabilities", icon: <FileText className="h-6 w-6" /> },
-    { name: "Media Manager", description: "Organize and optimize your media files", icon: <FileText className="h-6 w-6" /> },
-  ],
-  ecommerce: [
-    { name: "Shop System", description: "Set up an online store with ease", icon: <ShoppingCart className="h-6 w-6" /> },
-    { name: "Payment Gateway", description: "Secure payment processing for your store", icon: <ShoppingCart className="h-6 w-6" /> },
-  ],
-  analytics: [
-    { name: "Traffic Insights", description: "Detailed analytics for your website traffic", icon: <BarChart2 className="h-6 w-6" /> },
-    { name: "User Behavior", description: "Track and analyze user interactions", icon: <BarChart2 className="h-6 w-6" /> },
-  ],
-};
-
 function PluginStore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'home');
-  const [searchTerm, setSearchTerm] = useState('');
   const [installedPlugins, setInstalledPlugins] = useState([]);
   const [customPlugins, setCustomPlugins] = useState([]);
   const [selectedPlugin, setSelectedPlugin] = useState(null);
@@ -58,12 +40,14 @@ function PluginStore() {
     const updatedInstalledPlugins = [...installedPlugins, plugin];
     setInstalledPlugins(updatedInstalledPlugins);
     localStorage.setItem('installedPlugins', JSON.stringify(updatedInstalledPlugins));
+    toast.success(`${plugin.name} has been installed successfully!`);
   };
 
   const handleUninstall = (plugin) => {
     const updatedInstalledPlugins = installedPlugins.filter(p => p.name !== plugin.name);
     setInstalledPlugins(updatedInstalledPlugins);
     localStorage.setItem('installedPlugins', JSON.stringify(updatedInstalledPlugins));
+    toast.success(`${plugin.name} has been uninstalled successfully!`);
   };
 
   const handleAddCustomPlugin = (newPlugin) => {
@@ -98,8 +82,8 @@ function PluginStore() {
           <TabsTrigger value="manage">Manage Custom Plugins</TabsTrigger>
         </TabsList>
         <TabsContent value="home">
-          <PluginHero />
-          <PluginCategories />
+          <PluginHero onTabChange={setActiveTab} />
+          <PluginCategories onViewDetails={setSelectedPlugin} />
         </TabsContent>
         <TabsContent value="installed">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,65 +99,12 @@ function PluginStore() {
           </div>
         </TabsContent>
         <TabsContent value="browse">
-          <Input 
-            type="text" 
-            placeholder="Search plugins..." 
-            className="w-full max-w-md mb-6"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+          <BrowsePlugins
+            installedPlugins={installedPlugins}
+            onInstall={handleInstall}
+            onUninstall={handleUninstall}
+            onViewDetails={setSelectedPlugin}
           />
-          <Tabs defaultValue="all">
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              {Object.keys(pluginCategories).map(category => (
-                <TabsTrigger key={category} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {Object.entries(pluginCategories).map(([category, plugins]) => (
-              <TabsContent key={category} value={category}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {plugins
-                    .filter(plugin => 
-                      plugin.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                      plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((plugin, index) => (
-                      <PluginCard 
-                        key={`${category}-${index}`}
-                        plugin={plugin} 
-                        isInstalled={installedPlugins.some(p => p.name === plugin.name)}
-                        onInstall={handleInstall}
-                        onUninstall={handleUninstall}
-                        onViewDetails={() => setSelectedPlugin(plugin)}
-                      />
-                    ))
-                  }
-                </div>
-              </TabsContent>
-            ))}
-            <TabsContent value="all">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Object.values(pluginCategories).flat()
-                  .filter(plugin => 
-                    plugin.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                    plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
-                  .map((plugin, index) => (
-                    <PluginCard 
-                      key={index}
-                      plugin={plugin} 
-                      isInstalled={installedPlugins.some(p => p.name === plugin.name)}
-                      onInstall={handleInstall}
-                      onUninstall={handleUninstall}
-                      onViewDetails={() => setSelectedPlugin(plugin)}
-                    />
-                  ))
-                }
-              </div>
-            </TabsContent>
-          </Tabs>
         </TabsContent>
         <TabsContent value="create">
           <CreatePlugin onAddPlugin={handleAddCustomPlugin} />

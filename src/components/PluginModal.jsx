@@ -20,7 +20,7 @@ function PluginModal({ plugin, category, onClose, onInstall, onUninstall, isInst
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {plugin?.icon}
+            {plugin?.icon || category?.icon}
             {plugin?.name || category?.name}
           </DialogTitle>
           <DialogDescription>
@@ -35,7 +35,22 @@ function PluginModal({ plugin, category, onClose, onInstall, onUninstall, isInst
               ))}
             </div>
           )}
-          {/* Add more details about the plugin or category here */}
+          {plugin?.version && (
+            <p className="text-sm text-gray-500 mb-2">Version: {plugin.version}</p>
+          )}
+          {plugin?.author && (
+            <p className="text-sm text-gray-500 mb-2">Author: {plugin.author}</p>
+          )}
+          {plugin?.features && (
+            <div className="mb-4">
+              <h4 className="font-semibold mb-2">Features:</h4>
+              <ul className="list-disc list-inside">
+                {plugin.features.map((feature, index) => (
+                  <li key={index} className="text-sm">{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
         <DialogFooter>
           {plugin && (
