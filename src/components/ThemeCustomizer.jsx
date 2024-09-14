@@ -46,11 +46,10 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
   const [activeColorPicker, setActiveColorPicker] = useState(null);
 
   useEffect(() => {
-    const storedCustomizations = localStorage.getItem(`theme_${theme.id}_customizations`);
-    if (storedCustomizations) {
-      setCustomizations(JSON.parse(storedCustomizations));
+    if (theme.customizations) {
+      setCustomizations(theme.customizations);
     }
-  }, [theme.id]);
+  }, [theme]);
 
   const handleChange = (section, key, value) => {
     setCustomizations(prev => ({
@@ -63,7 +62,6 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
   };
 
   const handleSave = () => {
-    localStorage.setItem(`theme_${theme.id}_customizations`, JSON.stringify(customizations));
     onSave(customizations);
     onClose();
   };
