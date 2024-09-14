@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle } from 'lucide-react';
+import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Tool, Package, Store } from 'lucide-react';
 
 const Sidebar = () => {
   return (
@@ -28,6 +28,18 @@ const Sidebar = () => {
         <Link to="/people" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
           <Users className="h-5 w-5 mr-3" />
           <span>People</span>
+        </Link>
+        <Link to="/utilities" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
+          <Tool className="h-5 w-5 mr-3" />
+          <span>Utilities</span>
+        </Link>
+        <Link to="/settings" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
+          <Package className="h-5 w-5 mr-3" />
+          <span>Settings</span>
+        </Link>
+        <Link to="/plugin-store" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
+          <Store className="h-5 w-5 mr-3" />
+          <span>Plugin Store</span>
         </Link>
         <Link to="/reports" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
           <BarChart2 className="h-5 w-5 mr-3" />
