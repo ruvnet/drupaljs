@@ -7,9 +7,12 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { HexColorPicker } from "react-colorful";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const ThemeCustomizer = ({ theme, onSave, onClose }) => {
+const ThemeCustomizer = ({ theme, onSave, onClose, isNewTheme = false }) => {
   const [customizations, setCustomizations] = useState({
+    name: '',
     colors: {
       primary: '#3b82f6',
       secondary: '#10b981',
@@ -47,7 +50,7 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
 
   useEffect(() => {
     if (theme.customizations) {
-      setCustomizations(theme.customizations);
+      setCustomizations({ ...customizations, ...theme.customizations, name: theme.name });
     }
   }, [theme]);
 
@@ -62,7 +65,7 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
   };
 
   const handleSave = () => {
-    onSave(customizations);
+    onSave({ ...theme, name: customizations.name, customizations, isCustom: true });
     onClose();
   };
 
@@ -90,8 +93,87 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
     </div>
   );
 
+  const getThemeCSS = () => {
+    return `
+/* ${customizations.name} */
+:root {
+  --primary-color: ${customizations.colors.primary};
+  --secondary-color: ${customizations.colors.secondary};
+  --background-color: ${customizations.colors.background};
+  --text-color: ${customizations.colors.text};
+  --accent-color: ${customizations.colors.accent};
+  --font-family: ${customizations.typography.fontFamily};
+  --font-size: ${customizations.typography.fontSize}px;
+  --line-height: ${customizations.typography.lineHeight};
+  --heading-font-family: ${customizations.typography.headingFontFamily};
+  --heading-font-weight: ${customizations.typography.headingFontWeight};
+  --container-width: ${customizations.layout.containerWidth}px;
+  --grid-columns: ${customizations.layout.gridColumns};
+  --gap-size: ${customizations.layout.gapSize}px;
+  --button-radius: ${customizations.components.buttonRadius}px;
+  --input-radius: ${customizations.components.inputRadius}px;
+  --card-radius: ${customizations.components.cardRadius}px;
+  --shadow-intensity: ${customizations.components.shadowIntensity};
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gap-size);
+  padding-right: var(--gap-size);
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--button-radius);
+  padding: 0.5rem 1rem;
+}
+
+.input {
+  border-radius: var(--input-radius);
+  border: 1px solid var(--text-color);
+  padding: 0.5rem;
+}
+
+.card {
+  border-radius: var(--card-radius);
+  box-shadow: 0 var(--shadow-intensity)px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background-color: var(--background-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+
+${customizations.advanced.customCSS}
+`;
+  };
+
   return (
     <div className="space-y-6">
+      {isNewTheme && (
+        <div>
+          <Label htmlFor="themeName">Theme Name</Label>
+          <Input
+            id="themeName"
+            value={customizations.name}
+            onChange={(e) => setCustomizations(prev => ({ ...prev, name: e.target.value }))}
+            placeholder="Enter theme name"
+          />
+        </div>
+      )}
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="colors">
           <AccordionTrigger>Colors</AccordionTrigger>
@@ -300,6 +382,14 @@ const ThemeCustomizer = ({ theme, onSave, onClose }) => {
                 <Label htmlFor="animations">Animations</Label>
               </div>
             </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="preview">
+          <AccordionTrigger>Preview CSS</AccordionTrigger>
+          <AccordionContent>
+            <SyntaxHighlighter language="css" style={tomorrow} customStyle={{fontSize: '0.8rem'}}>
+              {getThemeCSS()}
+            </SyntaxHighlighter>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
