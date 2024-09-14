@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Bold, Italic, Underline, List, AlignLeft, Quote, X, ArrowLeft } from 'lucide-react';
+import { Star, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -67,16 +67,14 @@ const ArticleEdit = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
-                  <ReactQuill theme="snow" value={body} onChange={setBody} />
+                  <ReactQuill theme="snow" value={body} onChange={setBody} style={{height: '300px'}} />
+                  <div style={{height: '250px'}}></div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Hero</label>
                   <div className="border rounded-md p-4">
                     <div className="relative w-48 h-32 bg-gray-200 rounded-md overflow-hidden">
                       <img src="/placeholder.svg" alt="Hero" className="w-full h-full object-cover" />
-                      <button className="absolute top-2 right-2 bg-white rounded-full p-1">
-                        <X className="h-4 w-4 text-gray-600" />
-                      </button>
                     </div>
                     <p className="mt-2 text-sm text-gray-600">eberhard-grossgasteiger-542840-unsplash.jpg</p>
                     <p className="text-sm text-gray-500">The maximum number of media items have been selected.</p>
@@ -150,7 +148,8 @@ const ArticleEdit = () => {
                     <div className="space-y-4">
                       <div className="border p-4 rounded-md">
                         <h4 className="font-medium mb-2">Text Block</h4>
-                        <ReactQuill theme="snow" value="<p>This is a sample text block. You can edit this content.</p>" />
+                        <ReactQuill theme="snow" value="<p>This is a sample text block. You can edit this content.</p>" style={{height: '200px'}} />
+                        <div style={{height: '150px'}}></div>
                       </div>
                       <div className="border p-4 rounded-md">
                         <h4 className="font-medium mb-2">Image Block</h4>
