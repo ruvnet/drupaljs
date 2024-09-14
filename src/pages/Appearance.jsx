@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +14,9 @@ function Appearance() {
             <CardDescription>Change the look and feel of your site</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Manage Themes</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/appearance/themes">Manage Themes</Link>
+            </Button>
           </CardContent>
         </Card>
         <Card>
@@ -22,7 +25,9 @@ function Appearance() {
             <CardDescription>Configure blocks for different regions</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Manage Blocks</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/appearance/blocks">Manage Blocks</Link>
+            </Button>
           </CardContent>
         </Card>
         <Card>
@@ -31,7 +36,9 @@ function Appearance() {
             <CardDescription>Add custom CSS to your theme</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Edit Custom CSS</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/appearance/custom-css">Edit Custom CSS</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
