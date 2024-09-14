@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Tool, Package, Store } from 'lucide-react';
+import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store } from 'lucide-react';
 
 const Sidebar = () => {
   return (
@@ -30,7 +30,7 @@ const Sidebar = () => {
           <span>People</span>
         </Link>
         <Link to="/utilities" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
-          <Tool className="h-5 w-5 mr-3" />
+          <Wrench className="h-5 w-5 mr-3" />
           <span>Utilities</span>
         </Link>
         <Link to="/settings" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">
