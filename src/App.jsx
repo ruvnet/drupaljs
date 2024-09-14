@@ -25,6 +25,7 @@ import Settings from './pages/Settings';
 import SiteInfo from './pages/SiteInfo';
 import Performance from './pages/Performance';
 import FileSystem from './pages/FileSystem';
+import Deployment from './pages/Deployment';
 import PluginStore from './pages/PluginStore';
 import Reports from './pages/Reports';
 import Help from './pages/Help';
@@ -83,6 +84,7 @@ function App() {
                   <Route path="/settings/site-info" element={<SiteInfo />} />
                   <Route path="/settings/performance" element={<Performance />} />
                   <Route path="/settings/file-system" element={<FileSystem />} />
+                  <Route path="/settings/deployment" element={<Deployment />} />
                   <Route path="/plugin-store" element={<PluginStore />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/help" element={<Help />} />

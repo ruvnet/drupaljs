@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, Zap, HardDrive } from 'lucide-react';
+import { Info, Zap, HardDrive, Cloud } from 'lucide-react';
 
 function Settings() {
   return (
@@ -48,6 +48,20 @@ function Settings() {
           <CardContent>
             <Button variant="outline" className="w-full" asChild>
               <Link to="/settings/file-system">File System Settings</Link>
+            </Button>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Cloud className="mr-2 h-5 w-5" />
+              Deployment
+            </CardTitle>
+            <CardDescription>Configure and manage site deployments</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/settings/deployment">Deployment Settings</Link>
             </Button>
           </CardContent>
         </Card>
