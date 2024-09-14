@@ -12,6 +12,27 @@ import PluginCard from '@/components/PluginCard';
 import PluginHero from '@/components/PluginHero';
 import PluginCategories from '@/components/PluginCategories';
 
+const defaultInstalledPlugins = [
+  { name: "SEO Optimizer", description: "Improve your site's search engine rankings", icon: <Search className="h-6 w-6" /> },
+  { name: "Security Shield", description: "Enhance your site's security measures", icon: <Shield className="h-6 w-6" /> },
+  { name: "Performance Booster", description: "Optimize your site's loading speed", icon: <Zap className="h-6 w-6" /> },
+];
+
+const pluginCategories = {
+  contentManagement: [
+    { name: "Advanced Editor", description: "Enhanced content editing capabilities", icon: <FileText className="h-6 w-6" /> },
+    { name: "Media Manager", description: "Organize and optimize your media files", icon: <FileText className="h-6 w-6" /> },
+  ],
+  ecommerce: [
+    { name: "Shop System", description: "Set up an online store with ease", icon: <ShoppingCart className="h-6 w-6" /> },
+    { name: "Payment Gateway", description: "Secure payment processing for your store", icon: <ShoppingCart className="h-6 w-6" /> },
+  ],
+  analytics: [
+    { name: "Traffic Insights", description: "Detailed analytics for your website traffic", icon: <BarChart2 className="h-6 w-6" /> },
+    { name: "User Behavior", description: "Track and analyze user interactions", icon: <BarChart2 className="h-6 w-6" /> },
+  ],
+};
+
 function PluginStore() {
   const [searchTerm, setSearchTerm] = useState('');
   const [installedPlugins, setInstalledPlugins] = useState([]);
