@@ -1,27 +1,31 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const mockArticles = [
+  { id: 1, title: 'Introduction to Drupal', type: 'Blog Post', author: 'John Doe', status: 'published', updated: '2023-03-15' },
+  { id: 2, title: 'Creating Custom Modules', type: 'Tutorial', author: 'Jane Smith', status: 'draft', updated: '2023-03-20' },
+  { id: 3, title: 'Drupal Security Best Practices', type: 'Article', author: 'Bob Johnson', status: 'published', updated: '2023-03-25' },
+];
+
 function Articles() {
+  const [articles, setArticles] = useState(mockArticles);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
-
-  const { data: articles, isLoading, error } = useQuery({
-    queryKey: ['articles'],
-    queryFn: () => fetch('/api/articles').then(res => res.json()),
-  });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
   const filteredArticles = articles.filter(article => 
     (filter === 'all' || article.status === filter) &&
     article.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this article?')) {
+      setArticles(articles.filter(article => article.id !== id));
+    }
+  };
 
   return (
     <div className="p-6">
