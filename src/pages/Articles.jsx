@@ -1,5 +1,8 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 function Articles() {
   const { data: articles, isLoading, error } = useQuery({
@@ -11,16 +14,37 @@ function Articles() {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Articles</h1>
-      <ul>
-        {articles.map(article => (
-          <li key={article.id} className="mb-2">
-            <h2 className="text-xl font-semibold">{article.title}</h2>
-            <p>{article.excerpt}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Content</h1>
+        <Button>Add content</Button>
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Content type</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Updated</TableHead>
+            <TableHead>Operations</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {articles.map(article => (
+            <TableRow key={article.id}>
+              <TableCell>{article.title}</TableCell>
+              <TableCell>{article.type}</TableCell>
+              <TableCell>{article.author}</TableCell>
+              <TableCell>{article.status}</TableCell>
+              <TableCell>{article.updated}</TableCell>
+              <TableCell>
+                <Link to={`/articles/edit/${article.id}`} className="text-blue-600 hover:underline">Edit</Link>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
