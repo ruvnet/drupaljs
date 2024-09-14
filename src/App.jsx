@@ -22,6 +22,9 @@ import Cache from './pages/Cache';
 import Backup from './pages/Backup';
 import Database from './pages/Database';
 import Settings from './pages/Settings';
+import SiteInfo from './pages/SiteInfo';
+import Performance from './pages/Performance';
+import FileSystem from './pages/FileSystem';
 import PluginStore from './pages/PluginStore';
 import Reports from './pages/Reports';
 import Help from './pages/Help';
@@ -77,6 +80,9 @@ function App() {
                   <Route path="/utilities/backup" element={<Backup />} />
                   <Route path="/utilities/database" element={<Database />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/settings/site-info" element={<SiteInfo />} />
+                  <Route path="/settings/performance" element={<Performance />} />
+                  <Route path="/settings/file-system" element={<FileSystem />} />
                   <Route path="/plugin-store" element={<PluginStore />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/help" element={<Help />} />
