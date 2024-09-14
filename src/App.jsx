@@ -28,6 +28,9 @@ import FileSystem from './pages/FileSystem';
 import Deployment from './pages/Deployment';
 import PluginStore from './pages/PluginStore';
 import Reports from './pages/Reports';
+import SiteStatus from './pages/SiteStatus';
+import Logs from './pages/Logs';
+import Analytics from './pages/Analytics';
 import Help from './pages/Help';
 import NewContent from './pages/NewContent';
 import { Menu } from 'lucide-react';
@@ -87,6 +90,9 @@ function App() {
                   <Route path="/settings/deployment" element={<Deployment />} />
                   <Route path="/plugin-store" element={<PluginStore />} />
                   <Route path="/reports" element={<Reports />} />
+                  <Route path="/reports/site-status" element={<SiteStatus />} />
+                  <Route path="/reports/logs" element={<Logs />} />
+                  <Route path="/reports/analytics" element={<Analytics />} />
                   <Route path="/help" element={<Help />} />
                 </Routes>
               </div>
