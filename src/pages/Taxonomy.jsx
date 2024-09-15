@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 function Taxonomy() {
   const [taxonomies, setTaxonomies] = useState([]);
@@ -24,12 +25,14 @@ function Taxonomy() {
       const updatedTaxonomies = [...taxonomies, { id: Date.now(), name: newTaxonomy.trim() }];
       saveTaxonomies(updatedTaxonomies);
       setNewTaxonomy('');
+      toast.success('Taxonomy added successfully');
     }
   };
 
   const handleDeleteTaxonomy = (id) => {
     const updatedTaxonomies = taxonomies.filter(t => t.id !== id);
     saveTaxonomies(updatedTaxonomies);
+    toast.success('Taxonomy deleted successfully');
   };
 
   return (

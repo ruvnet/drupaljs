@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 function Menus() {
   const [menus, setMenus] = useState([]);
@@ -24,12 +25,14 @@ function Menus() {
       const updatedMenus = [...menus, { id: Date.now(), name: newMenu.trim() }];
       saveMenus(updatedMenus);
       setNewMenu('');
+      toast.success('Menu added successfully');
     }
   };
 
   const handleDeleteMenu = (id) => {
     const updatedMenus = menus.filter(m => m.id !== id);
     saveMenus(updatedMenus);
+    toast.success('Menu deleted successfully');
   };
 
   return (
