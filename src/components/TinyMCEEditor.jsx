@@ -5,7 +5,7 @@ const TinyMCEEditor = ({ content, onChange }) => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '/src/tinymce/tinymce.min.js';
+    script.src = '/tinymce/tinymce.min.js';
     script.async = true;
     document.body.appendChild(script);
 
