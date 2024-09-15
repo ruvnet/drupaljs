@@ -24,4 +24,11 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  'custom-plugins': {
+    enabled: true,
+    resolve: './src/plugins',
+    config: {
+      // Any global configuration for custom plugins
+    },
+  },
 });
