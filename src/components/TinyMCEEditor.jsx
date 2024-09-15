@@ -1,37 +1,31 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 
 const TinyMCEEditor = ({ content, onChange }) => {
-  const editorRef = useRef(null);
+  const handleEditorChange = (content, editor) => {
+    onChange(content);
+  };
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/tinymce/tinymce.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      window.tinymce.init({
-        target: editorRef.current,
-        plugins: 'advlist autolink lists link image charmap print preview anchor',
-        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-        height: 300,
-        setup: (editor) => {
-          editor.on('change', () => {
-            onChange(editor.getContent());
-          });
-        },
-      });
-    };
-
-    return () => {
-      if (window.tinymce) {
-        window.tinymce.remove(editorRef.current);
-      }
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  return <textarea ref={editorRef} defaultValue={content} />;
+  return (
+    <Editor
+      apiKey="your-tinymce-api-key"
+      initialValue={content}
+      init={{
+        height: 500,
+        menubar: false,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+          'undo redo | formatselect | bold italic backcolor | \
+          alignleft aligncenter alignright alignjustify | \
+          bullist numlist outdent indent | removeformat | help'
+      }}
+      onEditorChange={handleEditorChange}
+    />
+  );
 };
 
 export default TinyMCEEditor;

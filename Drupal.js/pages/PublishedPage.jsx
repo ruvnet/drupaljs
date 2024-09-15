@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Edit, Eye, Save, Plus, Trash2, Settings, PenTool, Palette } from 'lucide-react';
+import { Menu, Edit, Eye, Save, Plus, Settings } from 'lucide-react';
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import EditableSection from '@/components/EditableSection';
+import TinyMCEEditor from '@/components/TinyMCEEditor';
 import AIContentGenerator from '@/components/AIContentGenerator';
 import ColorPicker from '@/components/ColorPicker';
 import CSSEditor from '@/components/CSSEditor';
-import TinyMCEEditor from '@/components/TinyMCEEditor';
 
 function PublishedPage() {
   const { id } = useParams();
@@ -119,26 +117,19 @@ function EditorSidebar({ pageData, handleChange, handleAddSection }) {
             <TabsTrigger value="layout">Layout</TabsTrigger>
           </TabsList>
           <TabsContent value="content">
-            <div className="space-y-4">
-              <Button onClick={() => handleAddSection('text')} className="w-full justify-start">
-                <Plus className="mr-2 h-4 w-4" /> Add Text Section
-              </Button>
-              <Button onClick={() => handleAddSection('image')} className="w-full justify-start">
-                <Plus className="mr-2 h-4 w-4" /> Add Image Section
-              </Button>
-            </div>
+            <ContentTab handleAddSection={handleAddSection} />
           </TabsContent>
           <TabsContent value="meta">
-            <MetaEditor pageData={pageData} handleChange={handleChange} />
+            <MetaTab pageData={pageData} handleChange={handleChange} />
           </TabsContent>
           <TabsContent value="ai">
             <AIContentGenerator onGenerate={(field, content) => handleChange(field, content)} />
           </TabsContent>
           <TabsContent value="design">
-            <DesignEditor pageData={pageData} handleChange={handleChange} />
+            <DesignTab pageData={pageData} handleChange={handleChange} />
           </TabsContent>
           <TabsContent value="layout">
-            <LayoutEditor pageData={pageData} handleChange={handleChange} />
+            <LayoutTab pageData={pageData} handleChange={handleChange} />
           </TabsContent>
         </Tabs>
       </SheetContent>
@@ -146,7 +137,20 @@ function EditorSidebar({ pageData, handleChange, handleAddSection }) {
   );
 }
 
-function MetaEditor({ pageData, handleChange }) {
+function ContentTab({ handleAddSection }) {
+  return (
+    <div className="space-y-4">
+      <Button onClick={() => handleAddSection('text')} className="w-full justify-start">
+        <Plus className="mr-2 h-4 w-4" /> Add Text Section
+      </Button>
+      <Button onClick={() => handleAddSection('image')} className="w-full justify-start">
+        <Plus className="mr-2 h-4 w-4" /> Add Image Section
+      </Button>
+    </div>
+  );
+}
+
+function MetaTab({ pageData, handleChange }) {
   return (
     <div className="space-y-4">
       <Input
@@ -154,7 +158,7 @@ function MetaEditor({ pageData, handleChange }) {
         value={pageData.metaTitle}
         onChange={(e) => handleChange('metaTitle', e.target.value)}
       />
-      <Textarea
+      <Input
         placeholder="Meta Description"
         value={pageData.metaDescription}
         onChange={(e) => handleChange('metaDescription', e.target.value)}
@@ -163,7 +167,7 @@ function MetaEditor({ pageData, handleChange }) {
   );
 }
 
-function DesignEditor({ pageData, handleChange }) {
+function DesignTab({ pageData, handleChange }) {
   return (
     <div className="space-y-4">
       <ColorPicker
@@ -179,7 +183,7 @@ function DesignEditor({ pageData, handleChange }) {
   );
 }
 
-function LayoutEditor({ pageData, handleChange }) {
+function LayoutTab({ pageData, handleChange }) {
   return (
     <div className="space-y-4">
       <Select
@@ -205,30 +209,47 @@ function MainContent({ pageData, isEditing, handleChange, handleUpdateSection, h
   return (
     <div className={`flex-1 overflow-auto p-8 ${pageData.layout}`} style={{ backgroundColor: pageData.templateColor }}>
       <style>{pageData.customCSS}</style>
-      <EditableSection
-        isEditing={isEditing}
-        content={pageData.title}
-        onChange={(title) => handleChange('title', title)}
-        type="title"
+      <Input
+        value={pageData.title}
+        onChange={(e) => handleChange('title', e.target.value)}
+        className="text-3xl font-bold mb-4"
+        disabled={!isEditing}
       />
-      {isEditing ? (
-        <TinyMCEEditor
-          content={pageData.content}
-          onChange={(content) => handleChange('content', content)}
-        />
-      ) : (
-        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
-      )}
+      <TinyMCEEditor
+        content={pageData.content}
+        onChange={(content) => handleChange('content', content)}
+      />
       {pageData.sections.map((section) => (
-        <EditableSection
+        <SectionEditor
           key={section.id}
+          section={section}
           isEditing={isEditing}
-          content={section.content}
-          onChange={(content) => handleUpdateSection(section.id, content)}
-          type={section.type}
-          onDelete={() => handleDeleteSection(section.id)}
+          onUpdate={handleUpdateSection}
+          onDelete={handleDeleteSection}
         />
       ))}
+    </div>
+  );
+}
+
+function SectionEditor({ section, isEditing, onUpdate, onDelete }) {
+  if (!isEditing) {
+    return <div dangerouslySetInnerHTML={{ __html: section.content }} />;
+  }
+
+  return (
+    <div className="mb-4">
+      {section.type === 'text' ? (
+        <TinyMCEEditor
+          content={section.content}
+          onChange={(content) => onUpdate(section.id, content)}
+        />
+      ) : (
+        <img src={section.content} alt="Section" className="max-w-full h-auto" />
+      )}
+      <Button onClick={() => onDelete(section.id)} variant="destructive" size="sm" className="mt-2">
+        Delete Section
+      </Button>
     </div>
   );
 }
