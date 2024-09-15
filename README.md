@@ -1,6 +1,10 @@
-Welcome to **Drupal.js**, a Drupal CMS clone using Node.js, Vite.js, Tailwind CSS, and Supabase as the database. The script includes all the required code, configurations, a sample plugin, environment variables, Dockerfile, API, folder structures, and files, with no placeholders.
+# Drupal.js
+Welcome to **Drupal.js**, a Drupal CMS clone using Node.js, Vite.js, Tailwind CSS, and Supabase as the database. The script includes all the required code, configurations, a sample plugin, environment variables, Dockerfile, API, folder structures, and files, with no placeholders. #rc1
 
-# Drupal.js Structure 
+## Demo
+https://drupaljs.gptengineer.run/
+
+## Drupal.js Structure 
 
 Overview of the folder and file structure that your script will create for the Drupal.js project. It's structured to set up both the backend (Strapi with Supabase) and the frontend (Vite.js with React and Tailwind CSS), along with Docker for containerization and basic documentation.
 
