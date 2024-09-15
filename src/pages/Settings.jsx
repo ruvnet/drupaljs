@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, Zap, HardDrive, Cloud } from 'lucide-react';
 
 function Settings() {
   return (
@@ -11,58 +9,29 @@ function Settings() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Info className="mr-2 h-5 w-5" />
-              Site Information
-            </CardTitle>
+            <CardTitle>Site Information</CardTitle>
             <CardDescription>Configure basic site settings</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full" asChild>
-              <Link to="/settings/site-info">Edit Site Info</Link>
-            </Button>
+            <Button variant="outline" className="w-full">Edit Site Info</Button>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Zap className="mr-2 h-5 w-5" />
-              Performance
-            </CardTitle>
+            <CardTitle>Performance</CardTitle>
             <CardDescription>Optimize site performance</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full" asChild>
-              <Link to="/settings/performance">Performance Settings</Link>
-            </Button>
+            <Button variant="outline" className="w-full">Performance Settings</Button>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <HardDrive className="mr-2 h-5 w-5" />
-              File System
-            </CardTitle>
+            <CardTitle>File System</CardTitle>
             <CardDescription>Configure file storage settings</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full" asChild>
-              <Link to="/settings/file-system">File System Settings</Link>
-            </Button>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Cloud className="mr-2 h-5 w-5" />
-              Deployment
-            </CardTitle>
-            <CardDescription>Configure and manage site deployments</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="outline" className="w-full" asChild>
-              <Link to="/settings/deployment">Deployment Settings</Link>
-            </Button>
+            <Button variant="outline" className="w-full">File System Settings</Button>
           </CardContent>
         </Card>
       </div>
