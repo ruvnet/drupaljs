@@ -1,7 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store, X } from 'lucide-react';
+import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store, X, Database, Bot, Palette } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+const menuItems = [
+  { icon: Home, label: 'Home', path: '/' },
+  { icon: FileText, label: 'Content', path: '/content' },
+  { icon: Settings, label: 'Structure', path: '/structure' },
+  { icon: Globe, label: 'Appearance', path: '/appearance' },
+  { icon: Users, label: 'People', path: '/people' },
+  { icon: Wrench, label: 'Utilities', path: '/utilities' },
+  { icon: Package, label: 'Settings', path: '/settings' },
+  { icon: Store, label: 'Plugin Store', path: '/plugin-store' },
+  { icon: BarChart2, label: 'Reports', path: '/reports' },
+  { icon: HelpCircle, label: 'Help', path: '/help' },
+];
+
+const advancedItems = [
+  { icon: Database, label: 'Metadata', path: '/metadata' },
+  { icon: Bot, label: 'AI Content Generation', path: '/ai-content' },
+  { icon: Palette, label: 'Template & CSS Editor', path: '/template-editor' },
+];
+
+const MenuItem = ({ icon: Icon, label, path, onClick }) => (
+  <Link to={path} className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={onClick}>
+    <Icon className="h-5 w-5 mr-3" />
+    <span>{label}</span>
+  </Link>
+);
 
 const Sidebar = ({ open, setOpen }) => {
   return (
@@ -15,46 +42,19 @@ const Sidebar = ({ open, setOpen }) => {
           </Button>
         </div>
         <nav className="flex-1 overflow-y-auto">
-          <Link to="/" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Home className="h-5 w-5 mr-3" />
-            <span>Home</span>
-          </Link>
-          <Link to="/content" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <FileText className="h-5 w-5 mr-3" />
-            <span>Content</span>
-          </Link>
-          <Link to="/structure" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Settings className="h-5 w-5 mr-3" />
-            <span>Structure</span>
-          </Link>
-          <Link to="/appearance" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Globe className="h-5 w-5 mr-3" />
-            <span>Appearance</span>
-          </Link>
-          <Link to="/people" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Users className="h-5 w-5 mr-3" />
-            <span>People</span>
-          </Link>
-          <Link to="/utilities" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Wrench className="h-5 w-5 mr-3" />
-            <span>Utilities</span>
-          </Link>
-          <Link to="/settings" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Package className="h-5 w-5 mr-3" />
-            <span>Settings</span>
-          </Link>
-          <Link to="/plugin-store" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <Store className="h-5 w-5 mr-3" />
-            <span>Plugin Store</span>
-          </Link>
-          <Link to="/reports" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <BarChart2 className="h-5 w-5 mr-3" />
-            <span>Reports</span>
-          </Link>
-          <Link to="/help" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
-            <HelpCircle className="h-5 w-5 mr-3" />
-            <span>Help</span>
-          </Link>
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} {...item} onClick={() => setOpen(false)} />
+          ))}
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="advanced">
+              <AccordionTrigger className="px-6 py-2 text-gray-700 hover:bg-gray-100">Advanced Options</AccordionTrigger>
+              <AccordionContent>
+                {advancedItems.map((item, index) => (
+                  <MenuItem key={index} {...item} onClick={() => setOpen(false)} />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </nav>
       </div>
     </>
