@@ -13,6 +13,13 @@ import Menus from './pages/Menus';
 import BlockLayout from './pages/BlockLayout';
 import Views from './pages/Views';
 import MediaTypes from './pages/MediaTypes';
+import EntityTypes from './pages/EntityTypes';
+import Workflows from './pages/Workflows';
+import Webforms from './pages/Webforms';
+import UrlAliases from './pages/UrlAliases';
+import Languages from './pages/Languages';
+import ConfigSync from './pages/ConfigSync';
+import RestResources from './pages/RestResources';
 import Appearance from './pages/Appearance';
 import Themes from './pages/Themes';
 import Blocks from './pages/Blocks';
@@ -79,6 +86,13 @@ function App() {
                   <Route path="/structure/block-layout" element={<BlockLayout />} />
                   <Route path="/structure/views" element={<Views />} />
                   <Route path="/structure/media-types" element={<MediaTypes />} />
+                  <Route path="/structure/entity-types" element={<EntityTypes />} />
+                  <Route path="/structure/workflows" element={<Workflows />} />
+                  <Route path="/structure/webforms" element={<Webforms />} />
+                  <Route path="/structure/url-aliases" element={<UrlAliases />} />
+                  <Route path="/structure/languages" element={<Languages />} />
+                  <Route path="/structure/config-sync" element={<ConfigSync />} />
+                  <Route path="/structure/rest-resources" element={<RestResources />} />
                   <Route path="/appearance" element={<Appearance />} />
                   <Route path="/appearance/themes" element={<Themes />} />
                   <Route path="/appearance/blocks" element={<Blocks />} />
