@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import EditableSection from '@/components/EditableSection';
 import AIContentGenerator from '@/components/AIContentGenerator';
 import ColorPicker from '@/components/ColorPicker';
@@ -28,6 +29,7 @@ function PublishedPage() {
       sections: [],
       templateColor: '#ffffff',
       customCSS: '',
+      layout: 'default',
     };
     setPageData(storedData);
   }, [id]);
@@ -89,6 +91,7 @@ function PublishedPage() {
               <TabsTrigger value="meta">Meta</TabsTrigger>
               <TabsTrigger value="ai">AI</TabsTrigger>
               <TabsTrigger value="design">Design</TabsTrigger>
+              <TabsTrigger value="layout">Layout</TabsTrigger>
             </TabsList>
             <TabsContent value="content">
               <div className="space-y-4">
@@ -130,11 +133,30 @@ function PublishedPage() {
                 />
               </div>
             </TabsContent>
+            <TabsContent value="layout">
+              <div className="space-y-4">
+                <Select
+                  value={pageData.layout}
+                  onValueChange={(value) => handleChange('layout', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose layout" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Default</SelectItem>
+                    <SelectItem value="sidebar-left">Left Sidebar</SelectItem>
+                    <SelectItem value="sidebar-right">Right Sidebar</SelectItem>
+                    <SelectItem value="two-column">Two Column</SelectItem>
+                    <SelectItem value="three-column">Three Column</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </TabsContent>
           </Tabs>
         </SheetContent>
       </Sheet>
 
-      <div className="flex-1 overflow-auto p-8" style={{ backgroundColor: pageData.templateColor }}>
+      <div className={`flex-1 overflow-auto p-8 ${pageData.layout}`} style={{ backgroundColor: pageData.templateColor }}>
         <style>{pageData.customCSS}</style>
         <EditableSection
           isEditing={isEditing}
