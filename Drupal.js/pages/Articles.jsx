@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, Edit, Trash2 } from 'lucide-react';
+import { FileText, Edit, Trash2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
 const mockArticles = [
@@ -96,6 +96,12 @@ function Articles() {
                 <TableCell className="hidden sm:table-cell">{article.updated}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to={`/content/view/${article.id}`}>
+                        <Eye className="h-4 w-4 mr-1" />
+                        View
+                      </Link>
+                    </Button>
                     <Button variant="outline" size="sm" asChild>
                       <Link to={`/content/edit/${article.id}`}>
                         <Edit className="h-4 w-4 mr-1" />
