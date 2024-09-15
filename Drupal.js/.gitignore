@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+npm-debug.log
+.env
+
+# Build output
+/dist
+/build
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Strapi uploads
+public/uploads
+
+# Vite cache
+.vite
+
+# Docker files
+docker-compose.yml
+Dockerfile
