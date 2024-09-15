@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Star, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const ArticleEdit = () => {
+function NewContent() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const [isPublished, setIsPublished] = useState(true);
+  const [isPublished, setIsPublished] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [metaTitle, setMetaTitle] = useState('');
@@ -21,20 +20,19 @@ const ArticleEdit = () => {
   const [template, setTemplate] = useState('default');
 
   useEffect(() => {
-    // Load data from local storage
-    const storedData = JSON.parse(localStorage.getItem(`article_${id}`)) || {};
-    setIsPublished(storedData.isPublished || true);
-    setTitle(storedData.title || '');
-    setBody(storedData.body || '');
-    setMetaTitle(storedData.metaTitle || '');
-    setMetaDescription(storedData.metaDescription || '');
-    setKeywords(storedData.keywords || '');
-    setTemplate(storedData.template || 'default');
-  }, [id]);
+    // Load draft from local storage
+    const storedDraft = JSON.parse(localStorage.getItem('newContentDraft')) || {};
+    setIsPublished(storedDraft.isPublished || false);
+    setTitle(storedDraft.title || '');
+    setBody(storedDraft.body || '');
+    setMetaTitle(storedDraft.metaTitle || '');
+    setMetaDescription(storedDraft.metaDescription || '');
+    setKeywords(storedDraft.keywords || '');
+    setTemplate(storedDraft.template || 'default');
+  }, []);
 
-  const handleSave = () => {
-    const articleData = {
-      id,
+  const saveDraft = () => {
+    const draftData = {
       isPublished,
       title,
       body,
@@ -44,17 +42,33 @@ const ArticleEdit = () => {
       template,
       lastSaved: new Date().toISOString(),
     };
-    localStorage.setItem(`article_${id}`, JSON.stringify(articleData));
+    localStorage.setItem('newContentDraft', JSON.stringify(draftData));
+  };
+
+  const handleSave = () => {
+    const newContentData = {
+      isPublished,
+      title,
+      body,
+      metaTitle,
+      metaDescription,
+      keywords,
+      template,
+      createdAt: new Date().toISOString(),
+    };
     // In the future, replace with API call:
-    // await fetch('/Drupal.js/api/articles/${id}', {
-    //   method: 'PUT',
+    // await fetch('/Drupal.js/api/articles', {
+    //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(articleData),
+    //   body: JSON.stringify(newContentData),
     // });
+    localStorage.setItem(`article_${Date.now()}`, JSON.stringify(newContentData));
+    localStorage.removeItem('newContentDraft');
     navigate('/content');
   };
 
   const handleBack = () => {
+    saveDraft();
     navigate('/content');
   };
 
@@ -67,7 +81,7 @@ const ArticleEdit = () => {
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
-            <h1 className="text-2xl font-semibold">Edit Article</h1>
+            <h1 className="text-2xl font-semibold">Create New Content</h1>
             <span className="text-2xl">{title}</span>
             <Star className="h-5 w-5 text-gray-400" />
           </div>
@@ -98,7 +112,7 @@ const ArticleEdit = () => {
               <TabsContent value="details" className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                  <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                  <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
@@ -111,8 +125,7 @@ const ArticleEdit = () => {
                     <div className="relative w-48 h-32 bg-gray-200 rounded-md overflow-hidden">
                       <img src="/placeholder.svg" alt="Hero" className="w-full h-full object-cover" />
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">eberhard-grossgasteiger-542840-unsplash.jpg</p>
-                    <p className="text-sm text-gray-500">The maximum number of media items have been selected.</p>
+                    <p className="mt-2 text-sm text-gray-600">Upload an image</p>
                   </div>
                 </div>
               </TabsContent>
@@ -199,7 +212,7 @@ const ArticleEdit = () => {
                     <div className="space-y-4">
                       <div className="border p-4 rounded-md">
                         <h4 className="font-medium mb-2">Text Block</h4>
-                        <ReactQuill theme="snow" value="<p>This is a sample text block. You can edit this content.</p>" style={{height: '200px'}} />
+                        <ReactQuill theme="snow" value="" onChange={() => {}} style={{height: '200px'}} />
                         <div style={{height: '150px'}}></div>
                       </div>
                       <div className="border p-4 rounded-md">
@@ -208,7 +221,7 @@ const ArticleEdit = () => {
                           <div className="w-24 h-24 bg-gray-200 rounded-md"></div>
                           <div>
                             <Input placeholder="Image caption" className="mb-2" />
-                            <Button variant="outline" size="sm">Replace Image</Button>
+                            <Button variant="outline" size="sm">Add Image</Button>
                           </div>
                         </div>
                       </div>
@@ -223,6 +236,6 @@ const ArticleEdit = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ArticleEdit;
+export default NewContent;
