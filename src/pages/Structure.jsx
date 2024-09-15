@@ -2,14 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, List, Tag, Menu, Layout, Database, Layers, Workflow, Key, Globe, Code, Settings, FileSpreadsheet, FileStack, FileBarChart, FileCheck } from 'lucide-react';
+import { FileText, List, Tag, Menu, Database, Layers, Workflow, Key, Globe, Code, Settings, FileSpreadsheet, FileStack, FileBarChart, FileCheck } from 'lucide-react';
 
 function Structure() {
   const structureItems = [
     { title: "Content Types", description: "Manage content types and their fields", icon: <FileText className="h-6 w-6" />, link: "/Drupal.js/structure/content-types" },
     { title: "Taxonomy", description: "Organize content with vocabularies and terms", icon: <Tag className="h-6 w-6" />, link: "/Drupal.js/structure/taxonomy" },
     { title: "Menu", description: "Customize site navigation menus", icon: <Menu className="h-6 w-6" />, link: "/Drupal.js/structure/menus" },
-    { title: "Block Layout", description: "Manage block types and placements", icon: <Layout className="h-6 w-6" />, link: "/Drupal.js/structure/block-layout" },
     { title: "Views", description: "Create custom lists and queries", icon: <List className="h-6 w-6" />, link: "/Drupal.js/structure/views" },
     { title: "Media Types", description: "Manage different types of media", icon: <Database className="h-6 w-6" />, link: "/Drupal.js/structure/media-types" },
     { title: "Entity Types", description: "Manage custom entity types", icon: <Layers className="h-6 w-6" />, link: "/Drupal.js/structure/entity-types" },
