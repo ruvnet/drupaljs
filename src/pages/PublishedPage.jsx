@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function PublishedPage() {
   const { id } = useParams();
-  const [isEditing, setIsEditing] = useState(false);
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
@@ -36,56 +32,14 @@ function PublishedPage() {
     }
   }, [id]);
 
-  const toggleEditing = () => {
-    setIsEditing(!isEditing);
-  };
-
   if (!article) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex h-screen">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="fixed top-4 left-4 z-50">
-            <Menu className="h-4 w-4" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <SheetHeader>
-            <SheetTitle>Page Sections</SheetTitle>
-          </SheetHeader>
-          <div className="py-4">
-            <Button onClick={() => console.log('Edit Header')}>Edit Header</Button>
-            <Button onClick={() => console.log('Edit Body')} className="mt-2">Edit Body</Button>
-            <Button onClick={() => console.log('Edit Footer')} className="mt-2">Edit Footer</Button>
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      <div className="flex-1 overflow-auto">
-        <div className="max-w-3xl mx-auto py-8 px-4">
-          <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
-        </div>
-      </div>
-
-      <div className={`fixed right-0 top-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ${isEditing ? 'translate-x-0' : 'translate-x-full'}`}>
-        <Button
-          onClick={toggleEditing}
-          className="absolute -left-10 top-1/2 -translate-y-1/2 rotate-90"
-          variant="outline"
-        >
-          {isEditing ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          {isEditing ? 'Close' : 'Edit'}
-        </Button>
-        <div className="p-4">
-          <h2 className="text-lg font-semibold mb-4">Edit Content</h2>
-          {/* Add your editing controls here */}
-          <Button onClick={() => console.log('Save changes')}>Save Changes</Button>
-        </div>
-      </div>
+    <div className="max-w-3xl mx-auto py-8 px-4">
+      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+      <div dangerouslySetInnerHTML={{ __html: article.content || article.body }} />
     </div>
   );
 }

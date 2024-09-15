@@ -57,74 +57,82 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <ScrollToTop />
-        <div className="flex h-screen bg-gray-100">
-          <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <header className="bg-white shadow-sm z-10">
-              <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden"
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <Menu className="h-6 w-6" />
-                </Button>
-                <h1 className="text-lg font-semibold text-gray-900">Drupal.js</h1>
-              </div>
-            </header>
-            <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-              <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/content" element={<Articles />} />
-                  <Route path="/content/new" element={<NewContent />} />
-                  <Route path="/content/edit/:id" element={<ArticleEdit />} />
-                  <Route path="/content/view/:id" element={<PublishedPage />} />
-                  <Route path="/structure" element={<Structure />} />
-                  <Route path="/structure/content-types" element={<ContentTypes />} />
-                  <Route path="/structure/taxonomy" element={<Taxonomy />} />
-                  <Route path="/structure/menus" element={<Menus />} />
-                  <Route path="/structure/block-layout" element={<BlockLayout />} />
-                  <Route path="/structure/views" element={<Views />} />
-                  <Route path="/structure/media-types" element={<MediaTypes />} />
-                  <Route path="/structure/entity-types" element={<EntityTypes />} />
-                  <Route path="/structure/workflows" element={<Workflows />} />
-                  <Route path="/structure/webforms" element={<Webforms />} />
-                  <Route path="/structure/url-aliases" element={<UrlAliases />} />
-                  <Route path="/structure/languages" element={<Languages />} />
-                  <Route path="/structure/config-sync" element={<ConfigSync />} />
-                  <Route path="/structure/rest-resources" element={<RestResources />} />
-                  <Route path="/appearance" element={<Appearance />} />
-                  <Route path="/appearance/themes" element={<Themes />} />
-                  <Route path="/appearance/blocks" element={<Blocks />} />
-                  <Route path="/appearance/custom-css" element={<CustomCSS />} />
-                  <Route path="/people" element={<People />} />
-                  <Route path="/people/users" element={<Users />} />
-                  <Route path="/people/roles" element={<Roles />} />
-                  <Route path="/people/permissions" element={<Permissions />} />
-                  <Route path="/utilities" element={<Utilities />} />
-                  <Route path="/utilities/cache" element={<Cache />} />
-                  <Route path="/utilities/backup" element={<Backup />} />
-                  <Route path="/utilities/database" element={<Database />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/settings/site-info" element={<SiteInfo />} />
-                  <Route path="/settings/performance" element={<Performance />} />
-                  <Route path="/settings/file-system" element={<FileSystem />} />
-                  <Route path="/settings/deployment" element={<Deployment />} />
-                  <Route path="/plugin-store" element={<PluginStore />} />
-                  <Route path="/reports" element={<Reports />} />
-                  <Route path="/reports/site-status" element={<SiteStatus />} />
-                  <Route path="/reports/logs" element={<Logs />} />
-                  <Route path="/reports/analytics" element={<Analytics />} />
-                  <Route path="/help" element={<Help />} />
-                </Routes>
-              </div>
-            </main>
-          </div>
-        </div>
+        <Routes>
+          <Route path="/view/:id" element={<PublishedPage />} />
+          <Route path="*" element={<AdminLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />} />
+        </Routes>
       </Router>
     </QueryClientProvider>
+  );
+}
+
+function AdminLayout({ sidebarOpen, setSidebarOpen }) {
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="bg-white shadow-sm z-10">
+          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+            <h1 className="text-lg font-semibold text-gray-900">Drupal.js</h1>
+          </div>
+        </header>
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/content" element={<Articles />} />
+              <Route path="/content/new" element={<NewContent />} />
+              <Route path="/content/edit/:id" element={<ArticleEdit />} />
+              <Route path="/structure" element={<Structure />} />
+              <Route path="/structure/content-types" element={<ContentTypes />} />
+              <Route path="/structure/taxonomy" element={<Taxonomy />} />
+              <Route path="/structure/menus" element={<Menus />} />
+              <Route path="/structure/block-layout" element={<BlockLayout />} />
+              <Route path="/structure/views" element={<Views />} />
+              <Route path="/structure/media-types" element={<MediaTypes />} />
+              <Route path="/structure/entity-types" element={<EntityTypes />} />
+              <Route path="/structure/workflows" element={<Workflows />} />
+              <Route path="/structure/webforms" element={<Webforms />} />
+              <Route path="/structure/url-aliases" element={<UrlAliases />} />
+              <Route path="/structure/languages" element={<Languages />} />
+              <Route path="/structure/config-sync" element={<ConfigSync />} />
+              <Route path="/structure/rest-resources" element={<RestResources />} />
+              <Route path="/appearance" element={<Appearance />} />
+              <Route path="/appearance/themes" element={<Themes />} />
+              <Route path="/appearance/blocks" element={<Blocks />} />
+              <Route path="/appearance/custom-css" element={<CustomCSS />} />
+              <Route path="/people" element={<People />} />
+              <Route path="/people/users" element={<Users />} />
+              <Route path="/people/roles" element={<Roles />} />
+              <Route path="/people/permissions" element={<Permissions />} />
+              <Route path="/utilities" element={<Utilities />} />
+              <Route path="/utilities/cache" element={<Cache />} />
+              <Route path="/utilities/backup" element={<Backup />} />
+              <Route path="/utilities/database" element={<Database />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/settings/site-info" element={<SiteInfo />} />
+              <Route path="/settings/performance" element={<Performance />} />
+              <Route path="/settings/file-system" element={<FileSystem />} />
+              <Route path="/settings/deployment" element={<Deployment />} />
+              <Route path="/plugin-store" element={<PluginStore />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/reports/site-status" element={<SiteStatus />} />
+              <Route path="/reports/logs" element={<Logs />} />
+              <Route path="/reports/analytics" element={<Analytics />} />
+              <Route path="/help" element={<Help />} />
+            </Routes>
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }
 

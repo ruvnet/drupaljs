@@ -113,7 +113,7 @@ function Articles() {
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button variant="outline" size="sm" asChild>
-                      <Link to={`/content/view/${article.id}`}>
+                      <Link to={`/view/${article.id}`} target="_blank">
                         <Eye className="h-4 w-4 mr-1" />
                         View
                       </Link>
