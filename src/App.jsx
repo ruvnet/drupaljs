@@ -10,7 +10,6 @@ import Structure from './pages/Structure';
 import ContentTypes from './pages/ContentTypes';
 import Taxonomy from './pages/Taxonomy';
 import Menus from './pages/Menus';
-import Views from './pages/Views';
 import MediaTypes from './pages/MediaTypes';
 import EntityTypes from './pages/EntityTypes';
 import Workflows from './pages/Workflows';
@@ -86,7 +85,6 @@ function App() {
                   <Route path="/Drupal.js/structure/content-types" element={<ContentTypes />} />
                   <Route path="/Drupal.js/structure/taxonomy" element={<Taxonomy />} />
                   <Route path="/Drupal.js/structure/menus" element={<Menus />} />
-                  <Route path="/Drupal.js/structure/views" element={<Views />} />
                   <Route path="/Drupal.js/structure/media-types" element={<MediaTypes />} />
                   <Route path="/Drupal.js/structure/entity-types" element={<EntityTypes />} />
                   <Route path="/Drupal.js/structure/workflows" element={<Workflows />} />
