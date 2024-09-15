@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileText, Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const mockArticles = [
-  { id: 1, title: 'Introduction to Drupal', type: 'Blog Post', author: 'John Doe', status: 'published', updated: '2023-03-15' },
-  { id: 2, title: 'Creating Custom Modules', type: 'Tutorial', author: 'Jane Smith', status: 'draft', updated: '2023-03-20' },
-  { id: 3, title: 'Drupal Security Best Practices', type: 'Article', author: 'Bob Johnson', status: 'published', updated: '2023-03-25' },
-  // Add more mock articles here to test pagination
+  { id: 1, title: 'Introduction to Drupal.js', type: 'Blog Post', author: 'John Doe', status: 'published', updated: '2023-03-15' },
+  { id: 2, title: 'Creating Custom Components', type: 'Tutorial', author: 'Jane Smith', status: 'draft', updated: '2023-03-20' },
+  { id: 3, title: 'Drupal.js Security Best Practices', type: 'Article', author: 'Bob Johnson', status: 'published', updated: '2023-03-25' },
+  { id: 4, title: 'Optimizing Drupal.js Performance', type: 'Guide', author: 'Alice Brown', status: 'published', updated: '2023-03-30' },
+  { id: 5, title: 'Integrating Third-party APIs', type: 'Tutorial', author: 'Charlie Wilson', status: 'draft', updated: '2023-04-05' },
 ];
 
 function Articles() {
-  const [articles] = useState(mockArticles);
+  const [articles, setArticles] = useState(mockArticles);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,15 +39,16 @@ function Articles() {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this article?')) {
-      console.log(`Deleting article with id: ${id}`);
+      setArticles(articles.filter(article => article.id !== id));
+      toast.success('Article deleted successfully');
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h1 className="text-3xl font-bold mb-4 sm:mb-0">Content</h1>
-        <Button onClick={() => navigate('/new-content')}>Add content</Button>
+        <Button onClick={() => navigate('/content/new')}>Add content</Button>
       </div>
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <Input 
@@ -79,17 +83,29 @@ function Articles() {
           <TableBody>
             {currentArticles.map(article => (
               <TableRow key={article.id}>
-                <TableCell>{article.title}</TableCell>
+                <TableCell className="font-medium">{article.title}</TableCell>
                 <TableCell className="hidden sm:table-cell">{article.type}</TableCell>
                 <TableCell className="hidden sm:table-cell">{article.author}</TableCell>
-                <TableCell>{article.status}</TableCell>
+                <TableCell>
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {article.status}
+                  </span>
+                </TableCell>
                 <TableCell className="hidden sm:table-cell">{article.updated}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button variant="outline" size="sm" asChild>
-                      <Link to={`/articles/edit/${article.id}`}>Edit</Link>
+                      <Link to={`/content/edit/${article.id}`}>
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
+                      </Link>
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDelete(article.id)}>Delete</Button>
+                    <Button variant="outline" size="sm" onClick={() => handleDelete(article.id)}>
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Delete
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
