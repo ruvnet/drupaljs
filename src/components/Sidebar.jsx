@@ -1,28 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, FileText, Settings, PenTool, Users, Wrench, Package, Store, BarChart2, HelpCircle, Brain, FileEdit, Cog, FileQuestion, UserCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const Sidebar = ({ open, setOpen }) => {
-  const location = useLocation();
+  // Check if setOpen is a function, if not, provide a default empty function
   const handleSetOpen = typeof setOpen === 'function' ? setOpen : () => {};
-
-  const menuItems = [
-    { icon: Home, text: 'Home', link: '/' },
-    { icon: FileText, text: 'Content', link: '/content' },
-    { icon: Settings, text: 'Structure', link: '/structure' },
-    { icon: PenTool, text: 'Appearance', link: '/appearance' },
-    { icon: Users, text: 'People', link: '/people' },
-    { icon: Wrench, text: 'Utilities', link: '/utilities' },
-    { icon: Package, text: 'Settings', link: '/settings' },
-    { icon: Store, text: 'Plugin Store', link: '/plugin-store' },
-    { icon: BarChart2, text: 'Reports', link: '/reports' },
-    { icon: HelpCircle, text: 'Help', link: '/help' },
-    { icon: Brain, text: 'Drupal.AI', link: '/drupal-ai' },
-    { icon: FileEdit, text: 'Articles', link: '/articles' },
-    { icon: FileQuestion, text: 'Docs', link: '/documentation' },
-    { icon: UserCircle, text: 'Profile', link: '/profile' },
-  ];
 
   return (
     <>
@@ -38,17 +21,46 @@ const Sidebar = ({ open, setOpen }) => {
           </Button>
         </div>
         <nav className="flex-1 overflow-y-auto">
-          {menuItems.map((item, index) => (
-            <Link
-              key={index}
-              to={item.link}
-              className={`flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100 ${location.pathname === item.link ? 'bg-gray-100' : ''}`}
-              onClick={() => handleSetOpen(false)}
-            >
-              <item.icon className="h-5 w-5 mr-3" />
-              <span>{item.text}</span>
-            </Link>
-          ))}
+          <Link to="/" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Home className="h-5 w-5 mr-3" />
+            <span>Home</span>
+          </Link>
+          <Link to="/content" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <FileText className="h-5 w-5 mr-3" />
+            <span>Content</span>
+          </Link>
+          <Link to="/structure" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Settings className="h-5 w-5 mr-3" />
+            <span>Structure</span>
+          </Link>
+          <Link to="/appearance" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Globe className="h-5 w-5 mr-3" />
+            <span>Appearance</span>
+          </Link>
+          <Link to="/people" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Users className="h-5 w-5 mr-3" />
+            <span>People</span>
+          </Link>
+          <Link to="/utilities" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Wrench className="h-5 w-5 mr-3" />
+            <span>Utilities</span>
+          </Link>
+          <Link to="/settings" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Package className="h-5 w-5 mr-3" />
+            <span>Settings</span>
+          </Link>
+          <Link to="/plugin-store" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Store className="h-5 w-5 mr-3" />
+            <span>Plugin Store</span>
+          </Link>
+          <Link to="/reports" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <BarChart2 className="h-5 w-5 mr-3" />
+            <span>Reports</span>
+          </Link>
+          <Link to="/help" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <HelpCircle className="h-5 w-5 mr-3" />
+            <span>Help</span>
+          </Link>
         </nav>
       </div>
     </>
