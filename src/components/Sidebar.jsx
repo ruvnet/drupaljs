@@ -19,7 +19,7 @@ const Sidebar = ({ open, setOpen }) => {
             <Home className="h-5 w-5 mr-3" />
             <span>Home</span>
           </Link>
-          <Link to="/content" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
+          <Link to="/articles" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>
             <FileText className="h-5 w-5 mr-3" />
             <span>Content</span>
           </Link>

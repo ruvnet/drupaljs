@@ -4,96 +4,73 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Search, ShoppingCart, Shield, Zap, BarChart2, Download, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
 
 const pluginCategories = {
   content: [
-    { name: "Advanced WYSIWYG Editor", description: "Rich text editing with advanced formatting options", icon: <FileText className="h-5 w-5" /> },
-    { name: "Content Versioning", description: "Track and manage content revisions", icon: <FileText className="h-5 w-5" /> },
-    { name: "Media Library", description: "Centralized media management system", icon: <FileText className="h-5 w-5" /> },
-    { name: "Content Scheduler", description: "Schedule content publication and expiration", icon: <FileText className="h-5 w-5" /> },
-    { name: "Multilingual Content", description: "Manage content in multiple languages", icon: <FileText className="h-5 w-5" /> },
-    { name: "Content Workflow", description: "Define and manage content approval workflows", icon: <FileText className="h-5 w-5" /> }
+    { name: "Advanced WYSIWYG Editor", description: "Rich text editing with advanced formatting options" },
+    { name: "Content Versioning", description: "Track and manage content revisions" },
+    { name: "Media Library", description: "Centralized media management system" },
+    { name: "Content Scheduler", description: "Schedule content publication and expiration" },
+    { name: "Multilingual Content", description: "Manage content in multiple languages" },
+    { name: "Content Workflow", description: "Define and manage content approval workflows" }
   ],
   seo: [
-    { name: "SEO Toolkit", description: "Comprehensive SEO optimization tools", icon: <Search className="h-5 w-5" /> },
-    { name: "XML Sitemap Generator", description: "Automatically generate and update sitemaps", icon: <Search className="h-5 w-5" /> },
-    { name: "Meta Tag Manager", description: "Customize meta tags for better SEO", icon: <Search className="h-5 w-5" /> },
-    { name: "Redirect Manager", description: "Manage 301 redirects and avoid 404 errors", icon: <Search className="h-5 w-5" /> },
-    { name: "Schema Markup", description: "Add structured data to improve search results", icon: <Search className="h-5 w-5" /> },
-    { name: "SEO Analytics", description: "Track and analyze SEO performance", icon: <Search className="h-5 w-5" /> }
+    { name: "SEO Toolkit", description: "Comprehensive SEO optimization tools" },
+    { name: "XML Sitemap Generator", description: "Automatically generate and update sitemaps" },
+    { name: "Meta Tag Manager", description: "Customize meta tags for better SEO" },
+    { name: "Redirect Manager", description: "Manage 301 redirects and avoid 404 errors" },
+    { name: "Schema Markup", description: "Add structured data to improve search results" },
+    { name: "SEO Analytics", description: "Track and analyze SEO performance" }
   ],
   ecommerce: [
-    { name: "Product Catalog", description: "Manage and display product listings", icon: <ShoppingCart className="h-5 w-5" /> },
-    { name: "Shopping Cart", description: "Add shopping cart functionality to your site", icon: <ShoppingCart className="h-5 w-5" /> },
-    { name: "Payment Gateway Integration", description: "Connect with popular payment providers", icon: <ShoppingCart className="h-5 w-5" /> },
-    { name: "Order Management", description: "Track and manage customer orders", icon: <ShoppingCart className="h-5 w-5" /> },
-    { name: "Inventory Management", description: "Keep track of product stock levels", icon: <ShoppingCart className="h-5 w-5" /> },
-    { name: "Customer Reviews", description: "Allow customers to leave product reviews", icon: <ShoppingCart className="h-5 w-5" /> }
+    { name: "Product Catalog", description: "Manage and display product listings" },
+    { name: "Shopping Cart", description: "Add shopping cart functionality to your site" },
+    { name: "Payment Gateway Integration", description: "Connect with popular payment providers" },
+    { name: "Order Management", description: "Track and manage customer orders" },
+    { name: "Inventory Management", description: "Keep track of product stock levels" },
+    { name: "Customer Reviews", description: "Allow customers to leave product reviews" }
   ],
   security: [
-    { name: "Two-Factor Authentication", description: "Add an extra layer of security to user accounts", icon: <Shield className="h-5 w-5" /> },
-    { name: "Security Audit Log", description: "Track and log all security-related events", icon: <Shield className="h-5 w-5" /> },
-    { name: "Firewall", description: "Protect your site from malicious attacks", icon: <Shield className="h-5 w-5" /> },
-    { name: "CAPTCHA", description: "Prevent spam and bot submissions", icon: <Shield className="h-5 w-5" /> },
-    { name: "SSL Manager", description: "Easily manage SSL certificates", icon: <Shield className="h-5 w-5" /> },
-    { name: "Password Policy", description: "Enforce strong password requirements", icon: <Shield className="h-5 w-5" /> }
+    { name: "Two-Factor Authentication", description: "Add an extra layer of security to user accounts" },
+    { name: "Security Audit Log", description: "Track and log all security-related events" },
+    { name: "Firewall", description: "Protect your site from malicious attacks" },
+    { name: "CAPTCHA", description: "Prevent spam and bot submissions" },
+    { name: "SSL Manager", description: "Easily manage SSL certificates" },
+    { name: "Password Policy", description: "Enforce strong password requirements" }
   ],
   performance: [
-    { name: "Caching System", description: "Improve site speed with advanced caching", icon: <Zap className="h-5 w-5" /> },
-    { name: "Image Optimization", description: "Automatically optimize uploaded images", icon: <Zap className="h-5 w-5" /> },
-    { name: "Lazy Loading", description: "Improve page load times with lazy loading", icon: <Zap className="h-5 w-5" /> },
-    { name: "CDN Integration", description: "Easily integrate with content delivery networks", icon: <Zap className="h-5 w-5" /> },
-    { name: "Database Optimizer", description: "Optimize database queries for better performance", icon: <Zap className="h-5 w-5" /> },
-    { name: "Minification", description: "Minify CSS, JavaScript, and HTML", icon: <Zap className="h-5 w-5" /> }
+    { name: "Caching System", description: "Improve site speed with advanced caching" },
+    { name: "Image Optimization", description: "Automatically optimize uploaded images" },
+    { name: "Lazy Loading", description: "Improve page load times with lazy loading" },
+    { name: "CDN Integration", description: "Easily integrate with content delivery networks" },
+    { name: "Database Optimizer", description: "Optimize database queries for better performance" },
+    { name: "Minification", description: "Minify CSS, JavaScript, and HTML" }
   ],
   analytics: [
-    { name: "Google Analytics Integration", description: "Easy integration with Google Analytics", icon: <BarChart2 className="h-5 w-5" /> },
-    { name: "Heatmap Tracking", description: "Visualize user behavior on your site", icon: <BarChart2 className="h-5 w-5" /> },
-    { name: "A/B Testing", description: "Run A/B tests to optimize your content", icon: <BarChart2 className="h-5 w-5" /> },
-    { name: "Custom Reports", description: "Generate custom analytics reports", icon: <BarChart2 className="h-5 w-5" /> },
-    { name: "User Flow Visualization", description: "Track and visualize user journeys", icon: <BarChart2 className="h-5 w-5" /> },
-    { name: "Conversion Tracking", description: "Monitor and optimize conversion rates", icon: <BarChart2 className="h-5 w-5" /> }
+    { name: "Google Analytics Integration", description: "Easy integration with Google Analytics" },
+    { name: "Heatmap Tracking", description: "Visualize user behavior on your site" },
+    { name: "A/B Testing", description: "Run A/B tests to optimize your content" },
+    { name: "Custom Reports", description: "Generate custom analytics reports" },
+    { name: "User Flow Visualization", description: "Track and visualize user journeys" },
+    { name: "Conversion Tracking", description: "Monitor and optimize conversion rates" }
   ]
 };
 
 const installedPlugins = [
-  { name: "Basic SEO Tools", category: "SEO", icon: <Search className="h-5 w-5" /> },
-  { name: "Simple Cache", category: "Performance", icon: <Zap className="h-5 w-5" /> },
-  { name: "Contact Form", category: "Content", icon: <FileText className="h-5 w-5" /> },
+  { name: "Basic SEO Tools", category: "SEO" },
+  { name: "Simple Cache", category: "Performance" },
+  { name: "Contact Form", category: "Content" },
 ];
 
-function PluginCard({ plugin, isInstalled }) {
-  const handleInstall = () => {
-    toast.success(`${plugin.name} has been installed successfully!`);
-  };
-
-  const handleUninstall = () => {
-    toast.success(`${plugin.name} has been uninstalled successfully!`);
-  };
-
+function PluginCard({ plugin }) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          {plugin.icon}
-          {plugin.name}
-        </CardTitle>
+        <CardTitle>{plugin.name}</CardTitle>
         <CardDescription>{plugin.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        {isInstalled ? (
-          <Button variant="outline" className="w-full" onClick={handleUninstall}>
-            <Trash2 className="mr-2 h-4 w-4" />
-            Uninstall
-          </Button>
-        ) : (
-          <Button variant="outline" className="w-full" onClick={handleInstall}>
-            <Download className="mr-2 h-4 w-4" />
-            Install
-          </Button>
-        )}
+        <Button variant="outline" className="w-full">Install</Button>
       </CardContent>
     </Card>
   );
@@ -127,7 +104,15 @@ function PluginStore() {
         <TabsContent value="installed">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {installedPlugins.map((plugin, index) => (
-              <PluginCard key={index} plugin={plugin} isInstalled={true} />
+              <Card key={index} className="h-full">
+                <CardHeader>
+                  <CardTitle>{plugin.name}</CardTitle>
+                  <Badge>{plugin.category}</Badge>
+                </CardHeader>
+                <CardContent>
+                  <Button variant="outline" className="w-full">Uninstall</Button>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </TabsContent>
@@ -140,7 +125,7 @@ function PluginStore() {
                   plugin.description.toLowerCase().includes(searchTerm.toLowerCase())
                 )
                 .map((plugin, index) => (
-                  <PluginCard key={index} plugin={plugin} isInstalled={false} />
+                  <PluginCard key={index} plugin={plugin} />
                 ))
               }
             </div>
