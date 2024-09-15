@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,7 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { toast } from 'sonner';
+import { Brain, PenTool, Wand2, Zap, Settings, BarChart } from 'lucide-react';
 
 function DrupalAI() {
   const [aiSettings, setAISettings] = useState({
@@ -19,11 +22,26 @@ function DrupalAI() {
     prompt: '',
     contentType: 'article',
     tone: 'neutral',
-    length: 'medium',
+    length: 50,
   });
 
   const [savedPrompts, setSavedPrompts] = useState([]);
   const [newPrompt, setNewPrompt] = useState({ name: '', content: '' });
+  const [agentWorkflow, setAgentWorkflow] = useState({
+    researchAgent: true,
+    writingAgent: true,
+    editingAgent: true,
+    seoAgent: true,
+  });
+
+  useEffect(() => {
+    const storedSettings = JSON.parse(localStorage.getItem('aiSettings')) || {};
+    const storedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
+    const storedWorkflow = JSON.parse(localStorage.getItem('agentWorkflow')) || {};
+    setAISettings(storedSettings);
+    setSavedPrompts(storedPrompts);
+    setAgentWorkflow(storedWorkflow);
+  }, []);
 
   const handleSettingsChange = (e) => {
     const { name, value } = e.target;
@@ -31,28 +49,33 @@ function DrupalAI() {
   };
 
   const saveSettings = () => {
-    // In a real app, you'd save these securely, not to localStorage
     localStorage.setItem('aiSettings', JSON.stringify(aiSettings));
     toast.success('AI settings saved successfully');
   };
 
-  const handleContentGenerationChange = (e) => {
-    const { name, value } = e.target;
+  const handleContentGenerationChange = (name, value) => {
     setContentGeneration(prev => ({ ...prev, [name]: value }));
   };
 
   const generateContent = async () => {
-    // This is where you'd integrate with your chosen AI API
     console.log('Generating content with:', contentGeneration);
     toast.success('Content generated successfully');
   };
 
   const savePrompt = () => {
     if (newPrompt.name && newPrompt.content) {
-      setSavedPrompts(prev => [...prev, newPrompt]);
+      const updatedPrompts = [...savedPrompts, newPrompt];
+      setSavedPrompts(updatedPrompts);
+      localStorage.setItem('savedPrompts', JSON.stringify(updatedPrompts));
       setNewPrompt({ name: '', content: '' });
       toast.success('Prompt saved successfully');
     }
+  };
+
+  const handleAgentWorkflowChange = (agent) => {
+    const updatedWorkflow = { ...agentWorkflow, [agent]: !agentWorkflow[agent] };
+    setAgentWorkflow(updatedWorkflow);
+    localStorage.setItem('agentWorkflow', JSON.stringify(updatedWorkflow));
   };
 
   return (
@@ -61,9 +84,11 @@ function DrupalAI() {
       
       <Tabs defaultValue="content-generation">
         <TabsList className="mb-4">
-          <TabsTrigger value="content-generation">Content Generation</TabsTrigger>
-          <TabsTrigger value="prompt-management">Prompt Management</TabsTrigger>
-          <TabsTrigger value="settings">AI Settings</TabsTrigger>
+          <TabsTrigger value="content-generation"><PenTool className="w-4 h-4 mr-2" />Content Generation</TabsTrigger>
+          <TabsTrigger value="agent-workflow"><Brain className="w-4 h-4 mr-2" />Agent Workflow</TabsTrigger>
+          <TabsTrigger value="prompt-management"><Wand2 className="w-4 h-4 mr-2" />Prompt Management</TabsTrigger>
+          <TabsTrigger value="analytics"><BarChart className="w-4 h-4 mr-2" />Analytics</TabsTrigger>
+          <TabsTrigger value="settings"><Settings className="w-4 h-4 mr-2" />AI Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="content-generation">
@@ -78,16 +103,15 @@ function DrupalAI() {
                   <Label htmlFor="prompt">Prompt</Label>
                   <Textarea
                     id="prompt"
-                    name="prompt"
                     value={contentGeneration.prompt}
-                    onChange={handleContentGenerationChange}
+                    onChange={(e) => handleContentGenerationChange('prompt', e.target.value)}
                     placeholder="Enter your content generation prompt here"
                   />
                 </div>
                 <div className="flex space-x-4">
                   <div className="flex-1">
                     <Label htmlFor="contentType">Content Type</Label>
-                    <Select name="contentType" value={contentGeneration.contentType} onValueChange={(value) => handleContentGenerationChange({ target: { name: 'contentType', value } })}>
+                    <Select value={contentGeneration.contentType} onValueChange={(value) => handleContentGenerationChange('contentType', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select content type" />
                       </SelectTrigger>
@@ -95,12 +119,13 @@ function DrupalAI() {
                         <SelectItem value="article">Article</SelectItem>
                         <SelectItem value="blogPost">Blog Post</SelectItem>
                         <SelectItem value="productDescription">Product Description</SelectItem>
+                        <SelectItem value="socialMedia">Social Media Post</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="tone">Tone</Label>
-                    <Select name="tone" value={contentGeneration.tone} onValueChange={(value) => handleContentGenerationChange({ target: { name: 'tone', value } })}>
+                    <Select value={contentGeneration.tone} onValueChange={(value) => handleContentGenerationChange('tone', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select tone" />
                       </SelectTrigger>
@@ -108,24 +133,47 @@ function DrupalAI() {
                         <SelectItem value="neutral">Neutral</SelectItem>
                         <SelectItem value="formal">Formal</SelectItem>
                         <SelectItem value="casual">Casual</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex-1">
-                    <Label htmlFor="length">Length</Label>
-                    <Select name="length" value={contentGeneration.length} onValueChange={(value) => handleContentGenerationChange({ target: { name: 'length', value } })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select length" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="short">Short</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="long">Long</SelectItem>
+                        <SelectItem value="humorous">Humorous</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
-                <Button onClick={generateContent}>Generate Content</Button>
+                <div>
+                  <Label htmlFor="length">Content Length (words)</Label>
+                  <Slider
+                    id="length"
+                    min={50}
+                    max={1000}
+                    step={50}
+                    value={[contentGeneration.length]}
+                    onValueChange={(value) => handleContentGenerationChange('length', value[0])}
+                  />
+                  <div className="text-center mt-2">{contentGeneration.length} words</div>
+                </div>
+                <Button onClick={generateContent}><Zap className="w-4 h-4 mr-2" />Generate Content</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="agent-workflow">
+          <Card>
+            <CardHeader>
+              <CardTitle>Agent Workflow</CardTitle>
+              <CardDescription>Customize your AI agent workflow</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {Object.entries(agentWorkflow).map(([agent, isEnabled]) => (
+                  <div key={agent} className="flex items-center justify-between">
+                    <Label htmlFor={agent}>{agent.charAt(0).toUpperCase() + agent.slice(1)} Agent</Label>
+                    <Switch
+                      id={agent}
+                      checked={isEnabled}
+                      onCheckedChange={() => handleAgentWorkflowChange(agent)}
+                    />
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -173,6 +221,18 @@ function DrupalAI() {
                   ))}
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="analytics">
+          <Card>
+            <CardHeader>
+              <CardTitle>Content Analytics</CardTitle>
+              <CardDescription>View performance metrics for your AI-generated content</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Analytics dashboard coming soon...</p>
             </CardContent>
           </Card>
         </TabsContent>
