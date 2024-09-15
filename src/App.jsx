@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Sidebar from './components/Sidebar';
-import ScrollToTop from './components/ScrollToTop';
 import ArticleEdit from './pages/ArticleEdit';
 import Articles from './pages/Articles';
 import Home from './pages/Home';
@@ -10,16 +9,6 @@ import Structure from './pages/Structure';
 import ContentTypes from './pages/ContentTypes';
 import Taxonomy from './pages/Taxonomy';
 import Menus from './pages/Menus';
-import BlockLayout from './pages/BlockLayout';
-import Views from './pages/Views';
-import MediaTypes from './pages/MediaTypes';
-import EntityTypes from './pages/EntityTypes';
-import Workflows from './pages/Workflows';
-import Webforms from './pages/Webforms';
-import UrlAliases from './pages/UrlAliases';
-import Languages from './pages/Languages';
-import ConfigSync from './pages/ConfigSync';
-import RestResources from './pages/RestResources';
 import Appearance from './pages/Appearance';
 import Themes from './pages/Themes';
 import Blocks from './pages/Blocks';
@@ -55,7 +44,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <ScrollToTop />
         <div className="flex h-screen bg-gray-100">
           <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
           <div className="flex-1 flex flex-col overflow-hidden">
@@ -83,16 +71,6 @@ function App() {
                   <Route path="/structure/content-types" element={<ContentTypes />} />
                   <Route path="/structure/taxonomy" element={<Taxonomy />} />
                   <Route path="/structure/menus" element={<Menus />} />
-                  <Route path="/structure/block-layout" element={<BlockLayout />} />
-                  <Route path="/structure/views" element={<Views />} />
-                  <Route path="/structure/media-types" element={<MediaTypes />} />
-                  <Route path="/structure/entity-types" element={<EntityTypes />} />
-                  <Route path="/structure/workflows" element={<Workflows />} />
-                  <Route path="/structure/webforms" element={<Webforms />} />
-                  <Route path="/structure/url-aliases" element={<UrlAliases />} />
-                  <Route path="/structure/languages" element={<Languages />} />
-                  <Route path="/structure/config-sync" element={<ConfigSync />} />
-                  <Route path="/structure/rest-resources" element={<RestResources />} />
                   <Route path="/appearance" element={<Appearance />} />
                   <Route path="/appearance/themes" element={<Themes />} />
                   <Route path="/appearance/blocks" element={<Blocks />} />

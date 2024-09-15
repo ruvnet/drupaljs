@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
 
 function ContentTypes() {
   const [contentTypes, setContentTypes] = useState([]);
@@ -25,14 +24,12 @@ function ContentTypes() {
       const updatedContentTypes = [...contentTypes, { id: Date.now(), name: newContentType.trim() }];
       saveContentTypes(updatedContentTypes);
       setNewContentType('');
-      toast.success('Content type added successfully');
     }
   };
 
   const handleDeleteContentType = (id) => {
     const updatedContentTypes = contentTypes.filter(ct => ct.id !== id);
     saveContentTypes(updatedContentTypes);
-    toast.success('Content type deleted successfully');
   };
 
   return (
