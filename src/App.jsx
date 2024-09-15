@@ -45,7 +45,7 @@ import Analytics from './pages/Analytics';
 import Help from './pages/Help';
 import NewContent from './pages/NewContent';
 import Documentation from './pages/Documentation';
-import { Menu, Document, User } from 'lucide-react';
+import { Menu, FileText, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const queryClient = new QueryClient();
@@ -79,7 +79,7 @@ function App() {
                     Settings
                   </Link>
                   <Link to="/documentation" className="text-gray-700 hover:text-gray-900">
-                    <Document className="h-6 w-6" />
+                    <FileText className="h-6 w-6" />
                   </Link>
                   <Link to="/user" className="text-gray-700 hover:text-gray-900">
                     <User className="h-6 w-6" />
