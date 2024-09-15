@@ -10,6 +10,9 @@ import ContentTypes from './pages/ContentTypes';
 import Taxonomy from './pages/Taxonomy';
 import Menus from './pages/Menus';
 import Appearance from './pages/Appearance';
+import Themes from './pages/Themes';
+import Blocks from './pages/Blocks';
+import CustomCSS from './pages/CustomCSS';
 import People from './pages/People';
 import Utilities from './pages/Utilities';
 import Settings from './pages/Settings';
@@ -56,6 +59,9 @@ function App() {
                   <Route path="/structure/taxonomy" element={<Taxonomy />} />
                   <Route path="/structure/menus" element={<Menus />} />
                   <Route path="/appearance" element={<Appearance />} />
+                  <Route path="/appearance/themes" element={<Themes />} />
+                  <Route path="/appearance/blocks" element={<Blocks />} />
+                  <Route path="/appearance/custom-css" element={<CustomCSS />} />
                   <Route path="/people" element={<People />} />
                   <Route path="/utilities" element={<Utilities />} />
                   <Route path="/settings" element={<Settings />} />
