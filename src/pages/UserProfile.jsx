@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { User, Mail, Lock, Bell, Globe, Facebook, Twitter, LinkedIn, GitHub } from 'lucide-react';
+import { User, Mail, Lock, Bell, Globe, Facebook, Twitter, Linkedin, Github } from 'lucide-react';
 
 function UserProfile() {
   const [user, setUser] = useState({
@@ -150,14 +150,14 @@ function UserProfile() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <LinkedIn />
+                  <Linkedin />
                   <span>LinkedIn</span>
                 </div>
                 <Button variant="outline">Connect</Button>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <GitHub />
+                  <Github />
                   <span>GitHub</span>
                 </div>
                 <Button variant="outline">Connect</Button>
