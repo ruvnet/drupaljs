@@ -1,35 +1,90 @@
 # Drupal.js
 
-A modern Drupal-inspired CMS built with React and Node.js.
+Drupal.js is a modern, lightweight CMS inspired by Drupal, built with React and Node.js. Created by rUv, it offers a flexible and scalable solution for content management.
 
-## Quick Start
+## Introduction
 
-1. Install dependencies:
+Drupal.js combines the power of React for the frontend and Node.js for the backend, providing a fast and efficient CMS solution. It's designed to be easily customizable and extendable, making it suitable for a wide range of web applications.
+
+## Features
+
+- React-based frontend for optimal performance
+- Node.js backend with Strapi CMS
+- Tailwind CSS for responsive styling
+- Plugin system for easy extensibility
+- RESTful API and GraphQL support
+- User authentication and role-based access control
+- Content types: Articles, Pages, Categories, and Menus
+- Media management
+- Multilingual support
+
+## Focus
+
+Drupal.js focuses on:
+- Simplicity and ease of use
+- Performance and scalability
+- Developer-friendly architecture
+- Flexible content modeling
+- Modern web technologies
+
+## Applications
+
+Ideal for:
+- Blogs and news sites
+- Corporate websites
+- E-commerce platforms
+- Educational portals
+- Community forums
+- Portfolio sites
+
+## Customization
+
+Drupal.js can be easily customized through:
+- Custom React components
+- Tailwind CSS utility classes
+- Plugin development
+- Content type creation and modification
+- API extensions
+
+## Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/ruvnet/drupaljs.git
+   cd drupaljs
+   ```
+
+2. Install dependencies:
    ```
    npm install
    ```
 
-2. Start the development server:
+3. Set up environment variables:
+   Copy `.env.example` to `.env` and update the values.
+
+4. Start the development server:
    ```
    npm run dev
    ```
 
-3. Build for production:
+## Scaling
+
+Drupal.js is designed for scalability:
+- Use Docker for containerization
+- Implement load balancing with Nginx or AWS ELB
+- Utilize caching strategies (e.g., Redis)
+- Optimize database queries and indexing
+- Use CDNs for static asset delivery
+
+## Deployment
+
+1. Build the project:
    ```
    npm run build
    ```
 
-## Features
+2. Deploy using platforms like Vercel, Netlify, or your preferred hosting solution.
 
-- React-based frontend
-- Node.js backend
-- Tailwind CSS for styling
-- Vite for fast development and building
+3. Set up a CI/CD pipeline for automated deployments.
 
-## Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+For detailed documentation and contribution guidelines, visit our [GitHub repository](https://github.com/ruvnet/drupaljs).
