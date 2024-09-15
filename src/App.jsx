@@ -10,6 +10,9 @@ import Structure from './pages/Structure';
 import ContentTypes from './pages/ContentTypes';
 import Taxonomy from './pages/Taxonomy';
 import Menus from './pages/Menus';
+import BlockLayout from './pages/BlockLayout';
+import Views from './pages/Views';
+import MediaTypes from './pages/MediaTypes';
 import Appearance from './pages/Appearance';
 import Themes from './pages/Themes';
 import Blocks from './pages/Blocks';
@@ -73,6 +76,9 @@ function App() {
                   <Route path="/structure/content-types" element={<ContentTypes />} />
                   <Route path="/structure/taxonomy" element={<Taxonomy />} />
                   <Route path="/structure/menus" element={<Menus />} />
+                  <Route path="/structure/block-layout" element={<BlockLayout />} />
+                  <Route path="/structure/views" element={<Views />} />
+                  <Route path="/structure/media-types" element={<MediaTypes />} />
                   <Route path="/appearance" element={<Appearance />} />
                   <Route path="/appearance/themes" element={<Themes />} />
                   <Route path="/appearance/blocks" element={<Blocks />} />
