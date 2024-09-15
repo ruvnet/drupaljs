@@ -10,6 +10,20 @@ import Structure from './pages/Structure';
 import ContentTypes from './pages/ContentTypes';
 import Taxonomy from './pages/Taxonomy';
 import Menus from './pages/Menus';
+import BlockLayout from './pages/BlockLayout';
+import Views from './pages/Views';
+import MediaTypes from './pages/MediaTypes';
+import EntityTypes from './pages/EntityTypes';
+import Workflows from './pages/Workflows';
+import Webforms from './pages/Webforms';
+import URLAliases from './pages/URLAliases';
+import Languages from './pages/Languages';
+import ConfigSync from './pages/ConfigSync';
+import RESTResources from './pages/RESTResources';
+import DisplayModes from './pages/DisplayModes';
+import FieldStorage from './pages/FieldStorage';
+import Search from './pages/Search';
+import Taxonomies from './pages/Taxonomies';
 import Appearance from './pages/Appearance';
 import Themes from './pages/Themes';
 import Blocks from './pages/Blocks';
@@ -65,37 +79,51 @@ function App() {
             <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
               <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/content" element={<Articles />} />
-                  <Route path="/content/new" element={<NewContent />} />
-                  <Route path="/content/edit/:id" element={<ArticleEdit />} />
-                  <Route path="/structure" element={<Structure />} />
-                  <Route path="/structure/content-types" element={<ContentTypes />} />
-                  <Route path="/structure/taxonomy" element={<Taxonomy />} />
-                  <Route path="/structure/menus" element={<Menus />} />
-                  <Route path="/appearance" element={<Appearance />} />
-                  <Route path="/appearance/themes" element={<Themes />} />
-                  <Route path="/appearance/blocks" element={<Blocks />} />
-                  <Route path="/appearance/custom-css" element={<CustomCSS />} />
-                  <Route path="/people" element={<People />} />
-                  <Route path="/people/users" element={<Users />} />
-                  <Route path="/people/roles" element={<Roles />} />
-                  <Route path="/people/permissions" element={<Permissions />} />
-                  <Route path="/utilities" element={<Utilities />} />
-                  <Route path="/utilities/cache" element={<Cache />} />
-                  <Route path="/utilities/backup" element={<Backup />} />
-                  <Route path="/utilities/database" element={<Database />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/settings/site-info" element={<SiteInfo />} />
-                  <Route path="/settings/performance" element={<Performance />} />
-                  <Route path="/settings/file-system" element={<FileSystem />} />
-                  <Route path="/settings/deployment" element={<Deployment />} />
-                  <Route path="/plugin-store" element={<PluginStore />} />
-                  <Route path="/reports" element={<Reports />} />
-                  <Route path="/reports/site-status" element={<SiteStatus />} />
-                  <Route path="/reports/logs" element={<Logs />} />
-                  <Route path="/reports/analytics" element={<Analytics />} />
-                  <Route path="/help" element={<Help />} />
+                  <Route path="/Drupal.js" element={<Home />} />
+                  <Route path="/Drupal.js/content" element={<Articles />} />
+                  <Route path="/Drupal.js/content/new" element={<NewContent />} />
+                  <Route path="/Drupal.js/content/edit/:id" element={<ArticleEdit />} />
+                  <Route path="/Drupal.js/structure" element={<Structure />} />
+                  <Route path="/Drupal.js/structure/content-types" element={<ContentTypes />} />
+                  <Route path="/Drupal.js/structure/taxonomy" element={<Taxonomy />} />
+                  <Route path="/Drupal.js/structure/menus" element={<Menus />} />
+                  <Route path="/Drupal.js/structure/block-layout" element={<BlockLayout />} />
+                  <Route path="/Drupal.js/structure/views" element={<Views />} />
+                  <Route path="/Drupal.js/structure/media-types" element={<MediaTypes />} />
+                  <Route path="/Drupal.js/structure/entity-types" element={<EntityTypes />} />
+                  <Route path="/Drupal.js/structure/workflows" element={<Workflows />} />
+                  <Route path="/Drupal.js/structure/webforms" element={<Webforms />} />
+                  <Route path="/Drupal.js/structure/url-aliases" element={<URLAliases />} />
+                  <Route path="/Drupal.js/structure/languages" element={<Languages />} />
+                  <Route path="/Drupal.js/structure/config-sync" element={<ConfigSync />} />
+                  <Route path="/Drupal.js/structure/rest-resources" element={<RESTResources />} />
+                  <Route path="/Drupal.js/structure/display-modes" element={<DisplayModes />} />
+                  <Route path="/Drupal.js/structure/field-storage" element={<FieldStorage />} />
+                  <Route path="/Drupal.js/structure/search" element={<Search />} />
+                  <Route path="/Drupal.js/structure/taxonomies" element={<Taxonomies />} />
+                  <Route path="/Drupal.js/appearance" element={<Appearance />} />
+                  <Route path="/Drupal.js/appearance/themes" element={<Themes />} />
+                  <Route path="/Drupal.js/appearance/blocks" element={<Blocks />} />
+                  <Route path="/Drupal.js/appearance/custom-css" element={<CustomCSS />} />
+                  <Route path="/Drupal.js/people" element={<People />} />
+                  <Route path="/Drupal.js/people/users" element={<Users />} />
+                  <Route path="/Drupal.js/people/roles" element={<Roles />} />
+                  <Route path="/Drupal.js/people/permissions" element={<Permissions />} />
+                  <Route path="/Drupal.js/utilities" element={<Utilities />} />
+                  <Route path="/Drupal.js/utilities/cache" element={<Cache />} />
+                  <Route path="/Drupal.js/utilities/backup" element={<Backup />} />
+                  <Route path="/Drupal.js/utilities/database" element={<Database />} />
+                  <Route path="/Drupal.js/settings" element={<Settings />} />
+                  <Route path="/Drupal.js/settings/site-info" element={<SiteInfo />} />
+                  <Route path="/Drupal.js/settings/performance" element={<Performance />} />
+                  <Route path="/Drupal.js/settings/file-system" element={<FileSystem />} />
+                  <Route path="/Drupal.js/settings/deployment" element={<Deployment />} />
+                  <Route path="/Drupal.js/plugin-store" element={<PluginStore />} />
+                  <Route path="/Drupal.js/reports" element={<Reports />} />
+                  <Route path="/Drupal.js/reports/site-status" element={<SiteStatus />} />
+                  <Route path="/Drupal.js/reports/logs" element={<Logs />} />
+                  <Route path="/Drupal.js/reports/analytics" element={<Analytics />} />
+                  <Route path="/Drupal.js/help" element={<Help />} />
                 </Routes>
               </div>
             </main>
