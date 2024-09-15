@@ -26,7 +26,7 @@ mkdir "$PROJECT_NAME"
 cd "$PROJECT_NAME"
 
 # Initialize Git repository
-git init
+# git init
 
 # Create main folders
 mkdir backend frontend docs
