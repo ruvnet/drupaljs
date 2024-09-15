@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronLeft, ChevronRight, Edit, Eye, Save } from 'lucide-react';
+import { Menu, ChevronLeft, ChevronRight, Edit, Eye, Save, Plus, Trash2 } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function PublishedPage() {
   const { id } = useParams();
@@ -16,6 +21,8 @@ function PublishedPage() {
     content: '',
     metaTitle: '',
     metaDescription: '',
+    isPublished: true,
+    sections: [],
   });
 
   useEffect(() => {
@@ -27,13 +34,14 @@ function PublishedPage() {
         content: storedArticle.body || storedArticle.content,
         metaTitle: storedArticle.metaTitle || '',
         metaDescription: storedArticle.metaDescription || '',
+        isPublished: storedArticle.isPublished || true,
+        sections: storedArticle.sections || [],
       });
     } else {
       const mockArticle = {
         id: 1,
         title: 'Introduction to Drupal.js',
-        content: `
-          <h1>Introduction to Drupal.js</h1>
+        content: `<h1>Introduction to Drupal.js</h1>
           <p>Drupal.js is a modern content management system built with React and Node.js. It combines the flexibility of Drupal with the power of modern JavaScript frameworks.</p>
           <h2>Key Features</h2>
           <ul>
@@ -42,10 +50,14 @@ function PublishedPage() {
             <li>Customizable plugin system</li>
             <li>Advanced content editing capabilities</li>
           </ul>
-          <p>Whether you're building a simple blog or a complex web application, Drupal.js provides the tools and flexibility you need to create outstanding digital experiences.</p>
-        `,
+          <p>Whether you're building a simple blog or a complex web application, Drupal.js provides the tools and flexibility you need to create outstanding digital experiences.</p>`,
         metaTitle: 'Drupal.js: Modern CMS with React and Node.js',
         metaDescription: 'Discover Drupal.js, a powerful CMS combining Drupal flexibility with React and Node.js for creating outstanding digital experiences.',
+        isPublished: true,
+        sections: [
+          { id: 1, type: 'text', content: 'This is a sample text section.' },
+          { id: 2, type: 'image', src: '/placeholder.svg', alt: 'Placeholder image' },
+        ],
       };
       setArticle(mockArticle);
       setEditContent({
@@ -53,6 +65,8 @@ function PublishedPage() {
         content: mockArticle.content,
         metaTitle: mockArticle.metaTitle,
         metaDescription: mockArticle.metaDescription,
+        isPublished: mockArticle.isPublished,
+        sections: mockArticle.sections,
       });
     }
   }, [id]);
@@ -76,9 +90,41 @@ function PublishedPage() {
       content: article.body || article.content,
       metaTitle: article.metaTitle || '',
       metaDescription: article.metaDescription || '',
+      isPublished: article.isPublished || true,
+      sections: article.sections || [],
     });
     setIsEditing(false);
     setEditingSection(null);
+  };
+
+  const handleAddSection = (type) => {
+    const newSection = {
+      id: Date.now(),
+      type,
+      content: type === 'text' ? 'New text section' : '',
+      src: type === 'image' ? '/placeholder.svg' : '',
+      alt: type === 'image' ? 'New image' : '',
+    };
+    setEditContent(prev => ({
+      ...prev,
+      sections: [...prev.sections, newSection],
+    }));
+  };
+
+  const handleUpdateSection = (id, updatedContent) => {
+    setEditContent(prev => ({
+      ...prev,
+      sections: prev.sections.map(section =>
+        section.id === id ? { ...section, ...updatedContent } : section
+      ),
+    }));
+  };
+
+  const handleDeleteSection = (id) => {
+    setEditContent(prev => ({
+      ...prev,
+      sections: prev.sections.filter(section => section.id !== id),
+    }));
   };
 
   if (!article) {
@@ -102,10 +148,16 @@ function PublishedPage() {
               <Edit className="mr-2 h-4 w-4" /> Edit Title
             </Button>
             <Button onClick={() => handleEdit('content')} className="w-full justify-start">
-              <Edit className="mr-2 h-4 w-4" /> Edit Content
+              <Edit className="mr-2 h-4 w-4" /> Edit Main Content
             </Button>
             <Button onClick={() => handleEdit('meta')} className="w-full justify-start">
               <Edit className="mr-2 h-4 w-4" /> Edit Meta Tags
+            </Button>
+            <Button onClick={() => handleAddSection('text')} className="w-full justify-start">
+              <Plus className="mr-2 h-4 w-4" /> Add Text Section
+            </Button>
+            <Button onClick={() => handleAddSection('image')} className="w-full justify-start">
+              <Plus className="mr-2 h-4 w-4" /> Add Image Section
             </Button>
           </div>
         </SheetContent>
@@ -123,10 +175,10 @@ function PublishedPage() {
                 />
               )}
               {editingSection === 'content' && (
-                <Textarea
+                <ReactQuill
+                  theme="snow"
                   value={editContent.content}
-                  onChange={(e) => setEditContent({ ...editContent, content: e.target.value })}
-                  rows={10}
+                  onChange={(content) => setEditContent({ ...editContent, content })}
                 />
               )}
               {editingSection === 'meta' && (
@@ -142,6 +194,13 @@ function PublishedPage() {
                     placeholder="Meta Description"
                     rows={3}
                   />
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-600">Published</span>
+                    <Switch
+                      checked={editContent.isPublished}
+                      onCheckedChange={(isPublished) => setEditContent({ ...editContent, isPublished })}
+                    />
+                  </div>
                 </div>
               )}
               <div className="flex space-x-2">
@@ -157,6 +216,32 @@ function PublishedPage() {
               <div dangerouslySetInnerHTML={{ __html: article.content || article.body }} />
             </>
           )}
+          
+          {editContent.sections.map((section) => (
+            <div key={section.id} className="my-4">
+              {section.type === 'text' && (
+                <ReactQuill
+                  theme="snow"
+                  value={section.content}
+                  onChange={(content) => handleUpdateSection(section.id, { content })}
+                />
+              )}
+              {section.type === 'image' && (
+                <div>
+                  <img src={section.src} alt={section.alt} className="max-w-full h-auto" />
+                  <Input
+                    value={section.alt}
+                    onChange={(e) => handleUpdateSection(section.id, { alt: e.target.value })}
+                    placeholder="Image alt text"
+                    className="mt-2"
+                  />
+                </div>
+              )}
+              <Button variant="outline" onClick={() => handleDeleteSection(section.id)} className="mt-2">
+                <Trash2 className="mr-2 h-4 w-4" /> Delete Section
+              </Button>
+            </div>
+          ))}
         </div>
       </div>
 
