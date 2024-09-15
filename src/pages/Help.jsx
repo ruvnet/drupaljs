@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +14,9 @@ function Help() {
             <CardDescription>Access comprehensive guides and tutorials</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">View Documentation</Button>
+            <Button asChild variant="outline" className="w-full">
+              <Link to="/documentation">View Documentation</Link>
+            </Button>
           </CardContent>
         </Card>
         <Card>
@@ -22,7 +25,7 @@ function Help() {
             <CardDescription>Connect with other users and get support</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Visit Forums</Button>
+            <Button variant="outline" className="w-full" onClick={() => window.open('https://community.drupaljs.org', '_blank')}>Visit Forums</Button>
           </CardContent>
         </Card>
         <Card>
@@ -31,7 +34,7 @@ function Help() {
             <CardDescription>Watch step-by-step video guides</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Watch Tutorials</Button>
+            <Button variant="outline" className="w-full" onClick={() => window.open('https://tutorials.drupaljs.org', '_blank')}>Watch Tutorials</Button>
           </CardContent>
         </Card>
       </div>
