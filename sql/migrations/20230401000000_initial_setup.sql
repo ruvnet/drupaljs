@@ -1,3 +1,0 @@
--- Initial database setup
--- This file is intentionally left empty as the initial setup is handled by init.sql
--- Future migrations will be added here with proper timestamps
