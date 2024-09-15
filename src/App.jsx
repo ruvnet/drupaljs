@@ -45,7 +45,8 @@ import Analytics from './pages/Analytics';
 import Help from './pages/Help';
 import NewContent from './pages/NewContent';
 import Documentation from './pages/Documentation';
-import { Menu, FileText, User } from 'lucide-react';
+import DrupalAI from './pages/DrupalAI';
+import { Menu, FileText, User, Settings as SettingsIcon, Zap } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const queryClient = new QueryClient();
@@ -74,17 +75,21 @@ function App() {
                   <h1 className="text-lg font-semibold text-gray-900 md:hidden ml-2">Drupal.js</h1>
                 </div>
                 <div className="flex items-center space-x-4">
+                  <Link to="/drupal-ai" className="text-gray-700 hover:text-gray-900 flex items-center">
+                    <Zap className="h-5 w-5 mr-1" />
+                    Drupal.AI
+                  </Link>
                   <Link to="/content" className="text-gray-700 hover:text-gray-900">
                     Articles
                   </Link>
                   <Link to="/settings" className="text-gray-700 hover:text-gray-900">
-                    Settings
+                    <SettingsIcon className="h-5 w-5" />
                   </Link>
                   <Link to="/documentation" className="text-gray-700 hover:text-gray-900">
-                    <FileText className="h-6 w-6" />
+                    <FileText className="h-5 w-5" />
                   </Link>
                   <Link to="/user" className="text-gray-700 hover:text-gray-900">
-                    <User className="h-6 w-6" />
+                    <User className="h-5 w-5" />
                   </Link>
                 </div>
               </div>
@@ -134,6 +139,7 @@ function App() {
                   <Route path="/reports/analytics" element={<Analytics />} />
                   <Route path="/help" element={<Help />} />
                   <Route path="/documentation" element={<Documentation />} />
+                  <Route path="/drupal-ai" element={<DrupalAI />} />
                 </Routes>
               </div>
             </main>
