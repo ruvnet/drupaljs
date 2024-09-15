@@ -67,6 +67,38 @@ Drupal.js can be easily customized through:
    npm run dev
    ```
 
+## Folder Structure
+
+Here is an overview of the folder structure of the Drupal.js project:
+
+```bash
+Drupal.js/
+├── config/                 # Configuration files
+│   ├── database.js         # Database configuration
+│   ├── plugins.js          # Plugins configuration
+│   └── server.js           # Server configuration
+├── components/             # React components
+├── pages/                  # React page views
+├── public/                 # Public assets (HTML, images, etc.)
+├── src/                    # Source files
+│   ├── api/                # API content types
+│   │   ├── article/        # Content type: Article
+│   │   ├── category/       # Content type: Category
+│   │   ├── page/           # Content type: Page
+│   │   └── menu/           # Content type: Menu
+│   └── plugins/            # Custom plugins
+├── .env                    # Environment variables
+├── Dockerfile              # Dockerfile for containerization
+├── package.json            # Project dependencies
+└── README.md               # Project README
+```
+
+### Key Configuration Files
+
+- **config/database.js**: Configures the connection to the database.
+- **config/plugins.js**: Manages the plugins used in the project.
+- **config/server.js**: Configures the server settings.
+
 ## Scaling
 
 Drupal.js is designed for scalability:
