@@ -1,53 +1,39 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-function AIContentGenerator({ settings }) {
-  const [contentType, setContentType] = useState('article');
+const AIContentGenerator = ({ onGenerate }) => {
   const [prompt, setPrompt] = useState('');
-  const [generatedContent, setGeneratedContent] = useState('');
+  const [field, setField] = useState('content');
 
-  const handleGenerate = async () => {
-    // Simulated API call
-    const response = await fetch('/api/generate-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contentType, prompt, settings }),
-    });
-    const data = await response.json();
-    setGeneratedContent(data.content);
+  const handleGenerate = () => {
+    // In a real application, this would call an AI service
+    const generatedContent = `AI-generated content for ${field}: ${prompt}`;
+    onGenerate(field, generatedContent);
   };
 
   return (
     <div className="space-y-4">
-      <Select value={contentType} onValueChange={setContentType}>
+      <Select value={field} onValueChange={setField}>
         <SelectTrigger>
-          <SelectValue placeholder="Select content type" />
+          <SelectValue placeholder="Select field" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="article">Article</SelectItem>
-          <SelectItem value="page">Page</SelectItem>
-          <SelectItem value="product">Product Description</SelectItem>
+          <SelectItem value="title">Title</SelectItem>
+          <SelectItem value="content">Content</SelectItem>
+          <SelectItem value="metaTitle">Meta Title</SelectItem>
+          <SelectItem value="metaDescription">Meta Description</SelectItem>
         </SelectContent>
       </Select>
       <Textarea
-        placeholder="Enter your prompt here"
+        placeholder="Enter your prompt for AI generation"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
       <Button onClick={handleGenerate}>Generate Content</Button>
-      {generatedContent && (
-        <Textarea
-          value={generatedContent}
-          readOnly
-          rows={10}
-          className="mt-4"
-        />
-      )}
     </div>
   );
-}
+};
 
 export default AIContentGenerator;
