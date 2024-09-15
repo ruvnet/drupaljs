@@ -45,9 +45,8 @@ function App() {
               <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/content" element={<Articles />} />
-                  <Route path="/content/new" element={<NewContent />} />
-                  <Route path="/content/edit/:id" element={<ArticleEdit />} />
+                  <Route path="/articles" element={<Articles />} />
+                  <Route path="/articles/edit/:id" element={<ArticleEdit />} />
                   <Route path="/structure" element={<Structure />} />
                   <Route path="/appearance" element={<Appearance />} />
                   <Route path="/people" element={<People />} />
@@ -56,6 +55,7 @@ function App() {
                   <Route path="/plugin-store" element={<PluginStore />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/help" element={<Help />} />
+                  <Route path="/new-content" element={<NewContent />} />
                 </Routes>
               </div>
             </main>
