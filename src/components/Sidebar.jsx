@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, FileText, Settings, PenTool, Users, Wrench, Package, Store, BarChart2, HelpCircle, Brain, FileEdit, Cog, FileQuestion, UserCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const Sidebar = ({ open, setOpen }) => {
-  // Check if setOpen is a function, if not, provide a default empty function
+  const location = useLocation();
   const handleSetOpen = typeof setOpen === 'function' ? setOpen : () => {};
 
   const menuItems = [
@@ -20,7 +20,6 @@ const Sidebar = ({ open, setOpen }) => {
     { icon: HelpCircle, text: 'Help', link: '/help' },
     { icon: Brain, text: 'Drupal.AI', link: '/drupal-ai' },
     { icon: FileEdit, text: 'Articles', link: '/articles' },
-    { icon: Cog, text: 'Settings', link: '/settings' },
     { icon: FileQuestion, text: 'Docs', link: '/documentation' },
     { icon: UserCircle, text: 'Profile', link: '/profile' },
   ];
@@ -43,7 +42,7 @@ const Sidebar = ({ open, setOpen }) => {
             <Link
               key={index}
               to={item.link}
-              className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100"
+              className={`flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100 ${location.pathname === item.link ? 'bg-gray-100' : ''}`}
               onClick={() => handleSetOpen(false)}
             >
               <item.icon className="h-5 w-5 mr-3" />
