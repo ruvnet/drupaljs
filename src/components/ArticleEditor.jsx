@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft } from 'lucide-react';
 
 function ArticleEditor() {
   const { id } = useParams();
@@ -29,7 +28,7 @@ function ArticleEditor() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(articleData),
       }).then(res => res.json()),
-    onSuccess: () => navigate('/content'),
+    onSuccess: () => navigate('/articles'),
   });
 
   React.useEffect(() => {
@@ -44,19 +43,11 @@ function ArticleEditor() {
     saveMutation.mutate({ title, content, status });
   };
 
-  const handleBack = () => {
-    navigate('/content');
-  };
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="p-6">
-      <Button variant="outline" onClick={handleBack} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Articles
-      </Button>
       <h1 className="text-3xl font-bold mb-6">{isNewArticle ? 'Create New Article' : 'Edit Article'}</h1>
       <div className="space-y-4">
         <div>
@@ -91,7 +82,7 @@ function ArticleEditor() {
           </Select>
         </div>
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={handleBack}>Cancel</Button>
+          <Button variant="outline" onClick={() => navigate('/articles')}>Cancel</Button>
           <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
