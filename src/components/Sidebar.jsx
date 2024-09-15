@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store, X, User, FileText as Document } from 'lucide-react';
+import { Home, FileText, Settings, Globe, Users, BarChart2, HelpCircle, Wrench, Package, Store, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const Sidebar = ({ open, setOpen }) => {
+  // Check if setOpen is a function, if not, provide a default empty function
   const handleSetOpen = typeof setOpen === 'function' ? setOpen : () => {};
 
   return (
@@ -13,7 +14,7 @@ const Sidebar = ({ open, setOpen }) => {
         onClick={() => handleSetOpen(false)}
       ></div>
       <div className={`fixed inset-y-0 left-0 flex flex-col max-w-xs w-full bg-white shadow-xl transition-all transform z-30 md:relative md:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between h-16 px-4 border-b md:hidden">
+        <div className="flex items-center justify-between h-16 px-4 border-b">
           <span className="text-2xl font-semibold text-blue-600">Drupal.js</span>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => handleSetOpen(false)}>
             <X className="h-6 w-6" />
@@ -43,6 +44,10 @@ const Sidebar = ({ open, setOpen }) => {
           <Link to="/utilities" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
             <Wrench className="h-5 w-5 mr-3" />
             <span>Utilities</span>
+          </Link>
+          <Link to="/settings" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
+            <Package className="h-5 w-5 mr-3" />
+            <span>Settings</span>
           </Link>
           <Link to="/plugin-store" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100" onClick={() => handleSetOpen(false)}>
             <Store className="h-5 w-5 mr-3" />
