@@ -2,20 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronLeft, ChevronRight, Edit, Eye, Save, Plus, Trash2 } from 'lucide-react';
+import { Menu, Edit, Eye, Save, Plus, Trash2 } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import EditableSection from '@/components/EditableSection';
 
 function PublishedPage() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingSection, setEditingSection] = useState(null);
   const [editContent, setEditContent] = useState({
     title: '',
     content: '',
@@ -38,6 +36,7 @@ function PublishedPage() {
         sections: storedArticle.sections || [],
       });
     } else {
+      // Fallback to mock data if not found in localStorage
       const mockArticle = {
         id: 1,
         title: 'Introduction to Drupal.js',
@@ -71,30 +70,11 @@ function PublishedPage() {
     }
   }, [id]);
 
-  const handleEdit = (section) => {
-    setIsEditing(true);
-    setEditingSection(section);
-  };
-
   const handleSave = () => {
     const updatedArticle = { ...article, ...editContent };
     setArticle(updatedArticle);
     localStorage.setItem(`article_${id}`, JSON.stringify(updatedArticle));
     setIsEditing(false);
-    setEditingSection(null);
-  };
-
-  const handleCancel = () => {
-    setEditContent({
-      title: article.title,
-      content: article.body || article.content,
-      metaTitle: article.metaTitle || '',
-      metaDescription: article.metaDescription || '',
-      isPublished: article.isPublished || true,
-      sections: article.sections || [],
-    });
-    setIsEditing(false);
-    setEditingSection(null);
   };
 
   const handleAddSection = (type) => {
@@ -144,15 +124,6 @@ function PublishedPage() {
             <SheetTitle>Page Sections</SheetTitle>
           </SheetHeader>
           <div className="py-4 space-y-4">
-            <Button onClick={() => handleEdit('title')} className="w-full justify-start">
-              <Edit className="mr-2 h-4 w-4" /> Edit Title
-            </Button>
-            <Button onClick={() => handleEdit('content')} className="w-full justify-start">
-              <Edit className="mr-2 h-4 w-4" /> Edit Main Content
-            </Button>
-            <Button onClick={() => handleEdit('meta')} className="w-full justify-start">
-              <Edit className="mr-2 h-4 w-4" /> Edit Meta Tags
-            </Button>
             <Button onClick={() => handleAddSection('text')} className="w-full justify-start">
               <Plus className="mr-2 h-4 w-4" /> Add Text Section
             </Button>
@@ -165,81 +136,44 @@ function PublishedPage() {
 
       <div className="flex-1 overflow-auto">
         <div className="max-w-3xl mx-auto py-8 px-4">
-          {isEditing ? (
-            <div className="space-y-4">
-              {editingSection === 'title' && (
-                <Input
-                  value={editContent.title}
-                  onChange={(e) => setEditContent({ ...editContent, title: e.target.value })}
-                  className="text-3xl font-bold"
-                />
-              )}
-              {editingSection === 'content' && (
-                <ReactQuill
-                  theme="snow"
-                  value={editContent.content}
-                  onChange={(content) => setEditContent({ ...editContent, content })}
-                />
-              )}
-              {editingSection === 'meta' && (
-                <div className="space-y-2">
-                  <Input
-                    value={editContent.metaTitle}
-                    onChange={(e) => setEditContent({ ...editContent, metaTitle: e.target.value })}
-                    placeholder="Meta Title"
-                  />
-                  <Textarea
-                    value={editContent.metaDescription}
-                    onChange={(e) => setEditContent({ ...editContent, metaDescription: e.target.value })}
-                    placeholder="Meta Description"
-                    rows={3}
-                  />
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600">Published</span>
-                    <Switch
-                      checked={editContent.isPublished}
-                      onCheckedChange={(isPublished) => setEditContent({ ...editContent, isPublished })}
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="flex space-x-2">
-                <Button onClick={handleSave}>
-                  <Save className="mr-2 h-4 w-4" /> Save Changes
-                </Button>
-                <Button variant="outline" onClick={handleCancel}>Cancel</Button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: article.content || article.body }} />
-            </>
-          )}
-          
+          <EditableSection
+            isEditing={isEditing}
+            content={editContent.title}
+            onChange={(title) => setEditContent({ ...editContent, title })}
+            type="title"
+          />
+          <EditableSection
+            isEditing={isEditing}
+            content={editContent.content}
+            onChange={(content) => setEditContent({ ...editContent, content })}
+          />
           {editContent.sections.map((section) => (
             <div key={section.id} className="my-4">
               {section.type === 'text' && (
-                <ReactQuill
-                  theme="snow"
-                  value={section.content}
+                <EditableSection
+                  isEditing={isEditing}
+                  content={section.content}
                   onChange={(content) => handleUpdateSection(section.id, { content })}
                 />
               )}
               {section.type === 'image' && (
                 <div>
                   <img src={section.src} alt={section.alt} className="max-w-full h-auto" />
-                  <Input
-                    value={section.alt}
-                    onChange={(e) => handleUpdateSection(section.id, { alt: e.target.value })}
-                    placeholder="Image alt text"
-                    className="mt-2"
-                  />
+                  {isEditing && (
+                    <Input
+                      value={section.alt}
+                      onChange={(e) => handleUpdateSection(section.id, { alt: e.target.value })}
+                      placeholder="Image alt text"
+                      className="mt-2"
+                    />
+                  )}
                 </div>
               )}
-              <Button variant="outline" onClick={() => handleDeleteSection(section.id)} className="mt-2">
-                <Trash2 className="mr-2 h-4 w-4" /> Delete Section
-              </Button>
+              {isEditing && (
+                <Button variant="outline" onClick={() => handleDeleteSection(section.id)} className="mt-2">
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete Section
+                </Button>
+              )}
             </div>
           ))}
         </div>
@@ -255,6 +189,11 @@ function PublishedPage() {
           {isEditing ? <Eye className="mr-2 h-4 w-4" /> : <Edit className="mr-2 h-4 w-4" />}
           {isEditing ? 'Preview' : 'Quick Edit'}
         </Button>
+        {isEditing && (
+          <Button onClick={handleSave}>
+            <Save className="mr-2 h-4 w-4" /> Save Changes
+          </Button>
+        )}
       </div>
     </div>
   );
