@@ -13,6 +13,7 @@ import ArticleEdit from './pages/ArticleEdit';
 import DrupalAI from './pages/DrupalAI';
 import Settings from './pages/Settings';
 import Documentation from './pages/Documentation';
+import UserProfile from './pages/UserProfile';
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,7 @@ function App() {
         <div className="flex h-screen bg-gray-100">
           <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
           <div className="flex-1 flex flex-col overflow-hidden">
-            <header className="bg-gradient-to-r from-blue-800 to-blue-700 shadow-md z-10">
+            <header className="bg-gradient-to-r from-blue-900 to-blue-800 shadow-md z-10">
               <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                 <div className="flex items-center">
                   <Button
@@ -40,26 +41,36 @@ function App() {
                   <h1 className="text-lg font-semibold text-white md:hidden ml-2">Drupal.js</h1>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <Link to="/drupal-ai" className="text-white hover:text-gray-200 flex items-center">
-                    <Zap className="h-5 w-5 md:mr-1" />
-                    <span className="hidden md:inline">Drupal.AI</span>
-                  </Link>
-                  <Link to="/content" className="text-white hover:text-gray-200 flex items-center">
-                    <FileText className="h-5 w-5 md:mr-1" />
-                    <span className="hidden md:inline">Articles</span>
-                  </Link>
-                  <Link to="/settings" className="text-white hover:text-gray-200 flex items-center">
-                    <SettingsIcon className="h-5 w-5 md:mr-1" />
-                    <span className="hidden md:inline">Settings</span>
-                  </Link>
-                  <Link to="/documentation" className="text-white hover:text-gray-200 flex items-center">
-                    <FileText className="h-5 w-5 md:mr-1" />
-                    <span className="hidden md:inline">Docs</span>
-                  </Link>
-                  <Link to="/user" className="text-white hover:text-gray-200 flex items-center">
-                    <User className="h-5 w-5 md:mr-1" />
-                    <span className="hidden md:inline">User</span>
-                  </Link>
+                  <Button variant="ghost" className="text-white" asChild>
+                    <Link to="/drupal-ai">
+                      <Zap className="h-5 w-5 md:mr-1" />
+                      <span className="hidden md:inline">Drupal.AI</span>
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" className="text-white" asChild>
+                    <Link to="/content">
+                      <FileText className="h-5 w-5 md:mr-1" />
+                      <span className="hidden md:inline">Articles</span>
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" className="text-white" asChild>
+                    <Link to="/settings">
+                      <SettingsIcon className="h-5 w-5 md:mr-1" />
+                      <span className="hidden md:inline">Settings</span>
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" className="text-white" asChild>
+                    <Link to="/documentation">
+                      <FileText className="h-5 w-5 md:mr-1" />
+                      <span className="hidden md:inline">Docs</span>
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" className="text-white" asChild>
+                    <Link to="/user-profile">
+                      <User className="h-5 w-5 md:mr-1" />
+                      <span className="hidden md:inline">Profile</span>
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </header>
@@ -72,6 +83,7 @@ function App() {
                   <Route path="/drupal-ai" element={<DrupalAI />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/documentation" element={<Documentation />} />
+                  <Route path="/user-profile" element={<UserProfile />} />
                 </Routes>
               </div>
             </main>
