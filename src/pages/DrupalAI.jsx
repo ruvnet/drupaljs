@@ -10,6 +10,10 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { toast } from 'sonner';
 import { Brain, PenTool, Wand2, Zap, Settings, BarChart } from 'lucide-react';
+import AIContentGenerator from '@/components/AIContentGenerator';
+import AgentWorkflow from '@/components/AgentWorkflow';
+import PromptManagement from '@/components/PromptManagement';
+import ContentAnalytics from '@/components/ContentAnalytics';
 
 function DrupalAI() {
   const [aiSettings, setAISettings] = useState({
@@ -22,25 +26,12 @@ function DrupalAI() {
     prompt: '',
     contentType: 'article',
     tone: 'neutral',
-    length: 50,
-  });
-
-  const [savedPrompts, setSavedPrompts] = useState([]);
-  const [newPrompt, setNewPrompt] = useState({ name: '', content: '' });
-  const [agentWorkflow, setAgentWorkflow] = useState({
-    researchAgent: true,
-    writingAgent: true,
-    editingAgent: true,
-    seoAgent: true,
+    length: 500,
   });
 
   useEffect(() => {
     const storedSettings = JSON.parse(localStorage.getItem('aiSettings')) || {};
-    const storedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
-    const storedWorkflow = JSON.parse(localStorage.getItem('agentWorkflow')) || {};
     setAISettings(storedSettings);
-    setSavedPrompts(storedPrompts);
-    setAgentWorkflow(storedWorkflow);
   }, []);
 
   const handleSettingsChange = (e) => {
@@ -62,22 +53,6 @@ function DrupalAI() {
     toast.success('Content generated successfully');
   };
 
-  const savePrompt = () => {
-    if (newPrompt.name && newPrompt.content) {
-      const updatedPrompts = [...savedPrompts, newPrompt];
-      setSavedPrompts(updatedPrompts);
-      localStorage.setItem('savedPrompts', JSON.stringify(updatedPrompts));
-      setNewPrompt({ name: '', content: '' });
-      toast.success('Prompt saved successfully');
-    }
-  };
-
-  const handleAgentWorkflowChange = (agent) => {
-    const updatedWorkflow = { ...agentWorkflow, [agent]: !agentWorkflow[agent] };
-    setAgentWorkflow(updatedWorkflow);
-    localStorage.setItem('agentWorkflow', JSON.stringify(updatedWorkflow));
-  };
-
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Drupal.AI</h1>
@@ -92,149 +67,23 @@ function DrupalAI() {
         </TabsList>
         
         <TabsContent value="content-generation">
-          <Card>
-            <CardHeader>
-              <CardTitle>Generate AI Content</CardTitle>
-              <CardDescription>Use AI to generate content for your site</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="prompt">Prompt</Label>
-                  <Textarea
-                    id="prompt"
-                    value={contentGeneration.prompt}
-                    onChange={(e) => handleContentGenerationChange('prompt', e.target.value)}
-                    placeholder="Enter your content generation prompt here"
-                  />
-                </div>
-                <div className="flex space-x-4">
-                  <div className="flex-1">
-                    <Label htmlFor="contentType">Content Type</Label>
-                    <Select value={contentGeneration.contentType} onValueChange={(value) => handleContentGenerationChange('contentType', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select content type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="blogPost">Blog Post</SelectItem>
-                        <SelectItem value="productDescription">Product Description</SelectItem>
-                        <SelectItem value="socialMedia">Social Media Post</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex-1">
-                    <Label htmlFor="tone">Tone</Label>
-                    <Select value={contentGeneration.tone} onValueChange={(value) => handleContentGenerationChange('tone', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select tone" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="neutral">Neutral</SelectItem>
-                        <SelectItem value="formal">Formal</SelectItem>
-                        <SelectItem value="casual">Casual</SelectItem>
-                        <SelectItem value="humorous">Humorous</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="length">Content Length (words)</Label>
-                  <Slider
-                    id="length"
-                    min={50}
-                    max={1000}
-                    step={50}
-                    value={[contentGeneration.length]}
-                    onValueChange={(value) => handleContentGenerationChange('length', value[0])}
-                  />
-                  <div className="text-center mt-2">{contentGeneration.length} words</div>
-                </div>
-                <Button onClick={generateContent}><Zap className="w-4 h-4 mr-2" />Generate Content</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <AIContentGenerator
+            contentGeneration={contentGeneration}
+            handleContentGenerationChange={handleContentGenerationChange}
+            generateContent={generateContent}
+          />
         </TabsContent>
         
         <TabsContent value="agent-workflow">
-          <Card>
-            <CardHeader>
-              <CardTitle>Agent Workflow</CardTitle>
-              <CardDescription>Customize your AI agent workflow</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {Object.entries(agentWorkflow).map(([agent, isEnabled]) => (
-                  <div key={agent} className="flex items-center justify-between">
-                    <Label htmlFor={agent}>{agent.charAt(0).toUpperCase() + agent.slice(1)} Agent</Label>
-                    <Switch
-                      id={agent}
-                      checked={isEnabled}
-                      onCheckedChange={() => handleAgentWorkflowChange(agent)}
-                    />
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <AgentWorkflow />
         </TabsContent>
         
         <TabsContent value="prompt-management">
-          <Card>
-            <CardHeader>
-              <CardTitle>Prompt Management</CardTitle>
-              <CardDescription>Save and manage your AI prompts</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="promptName">Prompt Name</Label>
-                  <Input
-                    id="promptName"
-                    value={newPrompt.name}
-                    onChange={(e) => setNewPrompt(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Enter prompt name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="promptContent">Prompt Content</Label>
-                  <Textarea
-                    id="promptContent"
-                    value={newPrompt.content}
-                    onChange={(e) => setNewPrompt(prev => ({ ...prev, content: e.target.value }))}
-                    placeholder="Enter prompt content"
-                  />
-                </div>
-                <Button onClick={savePrompt}>Save Prompt</Button>
-                
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">Saved Prompts</h3>
-                  {savedPrompts.map((prompt, index) => (
-                    <Card key={index} className="mb-2">
-                      <CardHeader>
-                        <CardTitle>{prompt.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{prompt.content}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <PromptManagement />
         </TabsContent>
         
         <TabsContent value="analytics">
-          <Card>
-            <CardHeader>
-              <CardTitle>Content Analytics</CardTitle>
-              <CardDescription>View performance metrics for your AI-generated content</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Analytics dashboard coming soon...</p>
-            </CardContent>
-          </Card>
+          <ContentAnalytics />
         </TabsContent>
         
         <TabsContent value="settings">
