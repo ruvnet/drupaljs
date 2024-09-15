@@ -62,15 +62,17 @@ function App() {
           <div className="flex-1 flex flex-col overflow-hidden">
             <header className="bg-white shadow-sm z-10">
               <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden"
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <Menu className="h-6 w-6" />
-                </Button>
-                <h1 className="text-lg font-semibold text-gray-900 md:hidden">Drupal.js</h1>
+                <div className="flex items-center">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden"
+                    onClick={() => setSidebarOpen(true)}
+                  >
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                  <h1 className="text-lg font-semibold text-gray-900 md:hidden ml-2">Drupal.js</h1>
+                </div>
                 <div className="flex items-center space-x-4">
                   <Link to="/content" className="text-gray-700 hover:text-gray-900">
                     Articles
