@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import ScrollToTop from './components/ScrollToTop';
 import ArticleEdit from './pages/ArticleEdit';
 import Articles from './pages/Articles';
+import PublishedPage from './pages/PublishedPage';
 import Home from './pages/Home';
 import Structure from './pages/Structure';
 import ContentTypes from './pages/ContentTypes';
@@ -79,6 +80,7 @@ function App() {
                   <Route path="/content" element={<Articles />} />
                   <Route path="/content/new" element={<NewContent />} />
                   <Route path="/content/edit/:id" element={<ArticleEdit />} />
+                  <Route path="/content/view/:id" element={<PublishedPage />} />
                   <Route path="/structure" element={<Structure />} />
                   <Route path="/structure/content-types" element={<ContentTypes />} />
                   <Route path="/structure/taxonomy" element={<Taxonomy />} />

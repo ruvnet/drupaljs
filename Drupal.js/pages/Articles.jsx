@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, Edit, Trash2, Eye } from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
 import { toast } from 'sonner';
 
 const mockArticles = [
@@ -42,6 +43,15 @@ function Articles() {
       setArticles(articles.filter(article => article.id !== id));
       toast.success('Article deleted successfully');
     }
+  };
+
+  const handleTogglePublish = (id) => {
+    setArticles(articles.map(article => 
+      article.id === id 
+        ? { ...article, status: article.status === 'published' ? 'draft' : 'published' }
+        : article
+    ));
+    toast.success(`Article ${articles.find(a => a.id === id).status === 'published' ? 'unpublished' : 'published'} successfully`);
   };
 
   return (
@@ -83,15 +93,21 @@ function Articles() {
           <TableBody>
             {currentArticles.map(article => (
               <TableRow key={article.id}>
-                <TableCell className="font-medium">{article.title}</TableCell>
+                <TableCell className="font-medium text-sm">{article.title}</TableCell>
                 <TableCell className="hidden sm:table-cell">{article.type}</TableCell>
                 <TableCell className="hidden sm:table-cell">{article.author}</TableCell>
                 <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {article.status}
-                  </span>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={article.status === 'published'}
+                      onCheckedChange={() => handleTogglePublish(article.id)}
+                    />
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {article.status}
+                    </span>
+                  </div>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">{article.updated}</TableCell>
                 <TableCell>
