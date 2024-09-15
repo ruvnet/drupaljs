@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +14,9 @@ function Structure() {
             <CardDescription>Manage content types and their fields</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Manage Content Types</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/structure/content-types">Manage Content Types</Link>
+            </Button>
           </CardContent>
         </Card>
         <Card>
@@ -22,7 +25,9 @@ function Structure() {
             <CardDescription>Organize your content with categories</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Manage Taxonomy</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/structure/taxonomy">Manage Taxonomy</Link>
+            </Button>
           </CardContent>
         </Card>
         <Card>
@@ -31,7 +36,9 @@ function Structure() {
             <CardDescription>Customize site navigation menus</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full">Manage Menus</Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link to="/structure/menus">Manage Menus</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
