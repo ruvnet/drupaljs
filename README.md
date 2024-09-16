@@ -4,8 +4,7 @@ Welcome to **Drupal.js**, a Drupal CMS clone using Node.js, Vite.js, Tailwind CS
 ## Demo
 https://drupaljs.replit.app/
 
-# Response to Comment
-
+# Overview and Comparision of Drupal PHP
 ## Taxonomy and Data Structure Compatibility with Drupal
 
 Drupal.js uses a taxonomy and data structure that closely aligns with Drupal's concepts. Here are some key points:
