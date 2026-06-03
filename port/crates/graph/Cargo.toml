@@ -1,0 +1,13 @@
+[package]
+name = "drupaljs-graph"
+version = "0.0.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Directed-graph dependency resolution (topological sort, cycle detection, Tarjan SCC, transitive closure) for Drupal.js — Rust→WASM."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen.workspace = true

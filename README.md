@@ -1,4 +1,43 @@
 # Drupal.js
+
+**Drupal.js is a TypeScript + Rust/WASM port of [Drupal 11](https://www.drupal.org) core.**
+It reuses Drupal's proven domain model — entities, fields, plugins, hooks, render
+arrays, configuration, routing — implemented in strict TypeScript, with the
+complex/perf-critical algorithms written in Rust and compiled to WebAssembly.
+
+The port lives in **[`port/`](./port)** → see **[`port/README.md`](./port/README.md)**.
+
+| | |
+|---|---|
+| TypeScript packages | **90** (`@drupaljs/*`) |
+| Rust/WASM crates | **9** (`drupaljs-*`) |
+| Tests | **2,499 TS + 268 Rust — all passing** |
+| Core modules ported | **43/43** |
+| Methodology | TDD (London school), multi-agent swarm |
+| Architecture | ADRs [`docs/adr/`](./docs/adr) (ADR-0014…0018) · tracking epic [#4](https://github.com/ruvnet/drupaljs/issues/4) |
+
+```bash
+cd port
+npm install
+npm test                 # Vitest across all packages
+cargo test --workspace   # Rust/WASM crates
+npm run wasm             # build crates to WASM (needs wasm-pack)
+```
+
+> The full Drupal 11 source was mapped into a semantic vector DB (`drupal-rvf/`,
+> 16,151 files / 1.78M LOC) to ground the port. This is a faithful, test-backed
+> port of Drupal core's architecture and subsystem contracts — not a drop-in
+> replacement for a production Drupal site; several subsystems are minimal-but-correct
+> slices with documented `TODO`s.
+
+---
+
+## Legacy (rc1): Drupal-admin UI clone
+
+The sections below describe the original **Drupal.js rc1** — a front-end clone of
+Drupal's admin UX (Vite + React + Tailwind, Supabase/Strapi scaffold). It remains
+in the repo root and is superseded by the port above (see ADR-0001…0013).
+
 Welcome to **Drupal.js**, a Drupal CMS clone using Node.js, Vite.js, Tailwind CSS, and Supabase as the database. The script includes all the required code, configurations, a sample plugin, environment variables, Dockerfile, API, folder structures, and files, with no placeholders. #rc1
 
 ## Demo
