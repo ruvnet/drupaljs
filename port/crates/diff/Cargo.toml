@@ -1,0 +1,14 @@
+[package]
+name = "drupaljs-diff"
+version = "0.0.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen.workspace = true
+serde = { workspace = true }
+serde-wasm-bindgen = { workspace = true }

@@ -1,0 +1,26 @@
+{
+  "name": "@drupaljs/port",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Drupal core ported to TypeScript with Rust/WASM for complex algorithms.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "wasm": "node scripts/build-wasm.mjs",
+    "lint": "tsc -b --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "@vitest/coverage-v8": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

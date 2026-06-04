@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Drupal RVF workspace — heavy generated artifacts (keep *.mjs scripts + manifest)
+drupal-rvf/drupal-core/
+drupal-rvf/*.rvf
+drupal-rvf/*.rvf.lock
+drupal-rvf/drupal-catalog.jsonl
+drupal-rvf/*.vec.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +29,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env
